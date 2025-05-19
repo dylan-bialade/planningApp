@@ -224,4 +224,15 @@ class Personnel
         $this->groupe = $groupe;
         return $this;
     }
+    public function getTempsTravailRestant(): int
+    {
+        $totalHeures = 0;
+
+        foreach ($this->plannings as $planning) {
+            $totalHeures += $planning->getDuree(); // suppose que la méthode getDuree() existe dans Planning
+        }
+
+        return max(0, $this->heuresMensuelles - $totalHeures);
+    }
+
 }

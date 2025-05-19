@@ -17,4 +17,10 @@ return [
     '_profiler_router' => [['token'], ['_controller' => 'web_profiler.controller.router::panelAction'], [], [['text', '/router'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     '_profiler_exception' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::body'], [], [['text', '/exception'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     '_profiler_exception_css' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::stylesheet'], [], [['text', '/exception.css'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
+    'planning_list' => [[], ['_controller' => 'App\\Controller\\PlanningController::list'], [], [['text', '/planning/list']], [], [], []],
+    'planning_temps_travail' => [['id'], ['_controller' => 'App\\Controller\\PlanningController::voirTempsTravail'], [], [['text', '/temps-travail'], ['variable', '/', '[^/]++', 'id', true], ['text', '/planning/personnel']], [], [], []],
+    'planning_new' => [[], ['_controller' => 'App\\Controller\\PlanningController::new'], [], [['text', '/planning/new']], [], [], []],
+    'App\Controller\PlanningController::list' => [[], ['_controller' => 'App\\Controller\\PlanningController::list'], [], [['text', '/planning/list']], [], [], []],
+    'App\Controller\PlanningController::voirTempsTravail' => [['id'], ['_controller' => 'App\\Controller\\PlanningController::voirTempsTravail'], [], [['text', '/temps-travail'], ['variable', '/', '[^/]++', 'id', true], ['text', '/planning/personnel']], [], [], []],
+    'App\Controller\PlanningController::new' => [[], ['_controller' => 'App\\Controller\\PlanningController::new'], [], [['text', '/planning/new']], [], [], []],
 ];

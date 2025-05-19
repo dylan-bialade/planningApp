@@ -26,6 +26,43 @@ class Planning
     #[ORM\Column(length: 255)]
     private ?string $source = null;
 
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $dateDebut = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $dateFin = null;
+
+    public function getDuree(): int
+    {
+        if ($this->dateDebut && $this->dateFin) {
+            return $this->dateDebut->diff($this->dateFin)->h;
+        }
+        return 0;
+    }
+
+
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->dateFin;
+    }
+    
+    public function setDateFin(\DateTimeInterface $dateFin): static
+    {
+        $this->dateFin = $dateFin;
+        return $this;
+    }
+    
+    public function getDateDebut(): ?\DateTimeInterface
+    {
+        return $this->dateDebut;
+    }
+
+    public function setDateDebut(\DateTimeInterface $dateDebut): static
+    {
+        $this->dateDebut = $dateDebut;
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,4 +115,13 @@ class Planning
 
         return $this;
     }
+    
+    public function peutAccepterPlanning(Planning $planning): bool
+    {
+        $duree = $planning->getDuree();
+        return $this->getTempsTravailRestant() >= $duree;
+
+    }
+
+
 }
