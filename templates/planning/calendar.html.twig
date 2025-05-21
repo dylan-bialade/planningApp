@@ -1,19 +1,22 @@
+{# templates/planning/calendar.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Planning{% endblock %}
+{% block title %}Planning - Calendrier{% endblock %}
 
 {% block body %}
-    <h1>Planning hebdomadaire</h1>
-    <div id="calendar"></div>
-    <button id="generate" class="btn btn-primary mt-3">Générer automatiquement</button>
+    <div class="container mt-4">
+        <h1>Planning</h1>
+        <div id="calendar"></div>
+        <button id="generate" class="btn btn-primary mt-3">Générer automatiquement</button>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('build/app.js') }}"></script>
+    {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    {# Tu n'as pas besoin d'ajouter manuellement les CSS, c'est dans app.js grâce à webpack encore #}
+    {{ encore_entry_link_tags('app') }}
 {% endblock %}

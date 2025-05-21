@@ -1,3 +1,4 @@
+// webpack.config.js
 const Encore = require('@symfony/webpack-encore');
 
 Encore
@@ -11,10 +12,9 @@ Encore
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
     .enableVersioning(Encore.isProduction())
-    .enableSassLoader()
-    .enablePostCssLoader()
-    .configureBabel((config) => {
-        config.plugins.push('@babel/plugin-proposal-class-properties');
+    .configureBabel(() => {}, {
+        useBuiltIns: 'usage',
+        corejs: 3
     })
 ;
 

@@ -39,7 +39,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
 
     protected function doGetParent(array $context): bool|string|Template|TemplateWrapper
     {
-        // line 1
+        // line 2
         return "base.html.twig";
     }
 
@@ -52,7 +52,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "planning/calendar.html.twig"));
 
-        $this->parent = $this->load("base.html.twig", 1);
+        $this->parent = $this->load("base.html.twig", 2);
         yield from $this->parent->unwrap()->yield($context, array_merge($this->blocks, $blocks));
         
         $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
@@ -62,7 +62,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
 
     }
 
-    // line 3
+    // line 4
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -75,7 +75,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
 
-        yield "Planning";
+        yield "Planning - Calendrier";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -85,7 +85,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
         yield from [];
     }
 
-    // line 5
+    // line 6
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -98,10 +98,12 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
-        // line 6
-        yield "    <h1>Planning hebdomadaire</h1>
-    <div id=\"calendar\"></div>
-    <button id=\"generate\" class=\"btn btn-primary mt-3\">Générer automatiquement</button>
+        // line 7
+        yield "    <div class=\"container mt-4\">
+        <h1>Planning</h1>
+        <div id=\"calendar\"></div>
+        <button id=\"generate\" class=\"btn btn-primary mt-3\">Générer automatiquement</button>
+    </div>
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -112,7 +114,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
         yield from [];
     }
 
-    // line 11
+    // line 14
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -125,14 +127,14 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
 
-        // line 12
+        // line 15
         yield "    ";
         yield from $this->yieldParentBlock("javascripts", $context, $blocks);
         yield "
-    <script src=\"";
-        // line 13
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("build/app.js"), "html", null, true);
-        yield "\"></script>
+    ";
+        // line 16
+        yield $this->extensions['Symfony\WebpackEncoreBundle\Twig\EntryFilesTwigExtension']->renderWebpackScriptTags("app");
+        yield "
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -143,7 +145,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
         yield from [];
     }
 
-    // line 16
+    // line 19
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -156,11 +158,15 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "stylesheets"));
 
-        // line 17
+        // line 20
         yield "    ";
         yield from $this->yieldParentBlock("stylesheets", $context, $blocks);
         yield "
     ";
+        // line 21
+        yield $this->extensions['Symfony\WebpackEncoreBundle\Twig\EntryFilesTwigExtension']->renderWebpackLinkTags("app");
+        yield "
+";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -191,29 +197,32 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  160 => 17,  147 => 16,  134 => 13,  129 => 12,  116 => 11,  102 => 6,  89 => 5,  66 => 3,  43 => 1,);
+        return array (  167 => 21,  162 => 20,  149 => 19,  136 => 16,  131 => 15,  118 => 14,  102 => 7,  89 => 6,  66 => 4,  43 => 2,);
     }
 
     public function getSourceContext(): Source
     {
-        return new Source("{% extends 'base.html.twig' %}
+        return new Source("{# templates/planning/calendar.html.twig #}
+{% extends 'base.html.twig' %}
 
-{% block title %}Planning{% endblock %}
+{% block title %}Planning - Calendrier{% endblock %}
 
 {% block body %}
-    <h1>Planning hebdomadaire</h1>
-    <div id=\"calendar\"></div>
-    <button id=\"generate\" class=\"btn btn-primary mt-3\">Générer automatiquement</button>
+    <div class=\"container mt-4\">
+        <h1>Planning</h1>
+        <div id=\"calendar\"></div>
+        <button id=\"generate\" class=\"btn btn-primary mt-3\">Générer automatiquement</button>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src=\"{{ asset('build/app.js') }}\"></script>
+    {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    {# Tu n'as pas besoin d'ajouter manuellement les CSS, c'est dans app.js grâce à webpack encore #}
+    {{ encore_entry_link_tags('app') }}
 {% endblock %}
 ", "planning/calendar.html.twig", "C:\\wamp64\\www\\planningApp\\templates\\planning\\calendar.html.twig");
     }
