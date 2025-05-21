@@ -220,3 +220,17 @@ f8f1ad,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.de
 3eb2a4,127.0.0.1,GET,http://127.0.0.1:8000/planning/calendar,1747828518,,200,request
 b78439,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747828519,606863,404,request
 606863,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747828519,,404,request
+dfbef1,127.0.0.1,GET,http://127.0.0.1:8000/planning/calendar,1747829076,,200,request
+042963,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747829076,874200,404,request
+874200,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747829076,,404,request
+888904,127.0.0.1,GET,http://127.0.0.1:8000/planning/calendar,1747830872,f7c82a,500,request
+f7c82a,127.0.0.1,GET,http://127.0.0.1:8000/planning/calendar,1747830872,,500,request
+39d72f,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747830872,e4255f,404,request
+e4255f,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747830872,,404,request
+49c0c3,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747830875,a57aeb,404,request
+a57aeb,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747830875,,404,request
+73ca44,127.0.0.1,GET,http://127.0.0.1:8000/planning/generate/2025/21,1747830876,,302,request
+582285,127.0.0.1,GET,http://127.0.0.1:8000/planning/calendar,1747830877,8046a7,500,request
+8046a7,127.0.0.1,GET,http://127.0.0.1:8000/planning/calendar,1747830877,,500,request
+46a996,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747830877,28da82,404,request
+28da82,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747830877,,404,request
