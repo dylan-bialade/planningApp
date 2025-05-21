@@ -1,19 +1,38 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}Liste des plannings{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
 {% block body %}
-  <h2>Plannings</h2>
-  <a href="{{ path('planning_new') }}" class="btn btn-primary mb-3">Ajouter</a>
-  <table class="table">
-    <thead><tr><th>Date</th><th>Plage</th><th>Personnel</th><th>Action</th></tr></thead>
-    <tbody>
-      {% for p in plannings %}
+    <h1>Liste des plannings</h1>
+    <table>
         <tr>
-          <td>{{ p.date|date('Y-m-d') }}</td>
-          <td>{{ p.plage }}</td>
-          <td>{{ p.personnel.prenom }} {{ p.personnel.nom }}</td>
-          <td><!-- actions --></td>
+            <th>Date</th>
+            <th>Plage</th>
+            <th>Personnel</th>
+            <th>Groupe</th>
+            <th>Libellé</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        {% for planning in plannings %}
+            <tr>
+                <td>{{ planning.date ? planning.date|date('d/m/Y') : '-' }}</td>
+                <td>{{ planning.plage }}</td>
+                <td>
+                    {% if planning.personnel %}
+                        {{ planning.personnel.prenom }} {{ planning.personnel.nom }}
+                    {% else %}
+                        Besoin de personnel
+                    {% endif %}
+                </td>
+                <td>{{ planning.personnel and planning.personnel.groupe ? planning.personnel.groupe.id : '-' }}</td>
+                <td>{{ planning.libelle }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ path('planning_calendar') }}">Retour au calendrier</a>
+    {{ encore_entry_script_tags('app') }}
 {% endblock %}

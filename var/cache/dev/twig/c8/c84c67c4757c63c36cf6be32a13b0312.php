@@ -31,6 +31,7 @@ class __TwigTemplate_e2a919b29e64256770464301d3eb71b4 extends Template
 
         $this->blocks = [
             'title' => [$this, 'block_title'],
+            'stylesheets' => [$this, 'block_stylesheets'],
             'body' => [$this, 'block_body'],
         ];
     }
@@ -60,7 +61,7 @@ class __TwigTemplate_e2a919b29e64256770464301d3eb71b4 extends Template
 
     }
 
-    // line 2
+    // line 3
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -83,7 +84,38 @@ class __TwigTemplate_e2a919b29e64256770464301d3eb71b4 extends Template
         yield from [];
     }
 
-    // line 3
+    // line 5
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_stylesheets(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "stylesheets"));
+
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "stylesheets"));
+
+        // line 6
+        yield "    ";
+        yield from $this->yieldParentBlock("stylesheets", $context, $blocks);
+        yield "
+    ";
+        // line 7
+        yield $this->extensions['Symfony\WebpackEncoreBundle\Twig\EntryFilesTwigExtension']->renderWebpackLinkTags("app");
+        yield "
+";
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
+
+        yield from [];
+    }
+
+    // line 10
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -96,46 +128,73 @@ class __TwigTemplate_e2a919b29e64256770464301d3eb71b4 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
-        // line 4
-        yield "  <h2>Plannings</h2>
-  <a href=\"";
-        // line 5
-        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_new");
-        yield "\" class=\"btn btn-primary mb-3\">Ajouter</a>
-  <table class=\"table\">
-    <thead><tr><th>Date</th><th>Plage</th><th>Personnel</th><th>Action</th></tr></thead>
-    <tbody>
-      ";
-        // line 9
-        $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["plannings"]) || array_key_exists("plannings", $context) ? $context["plannings"] : (function () { throw new RuntimeError('Variable "plannings" does not exist.', 9, $this->source); })()));
-        foreach ($context['_seq'] as $context["_key"] => $context["p"]) {
-            // line 10
-            yield "        <tr>
-          <td>";
-            // line 11
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["p"], "date", [], "any", false, false, false, 11), "Y-m-d"), "html", null, true);
-            yield "</td>
-          <td>";
-            // line 12
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["p"], "plage", [], "any", false, false, false, 12), "html", null, true);
-            yield "</td>
-          <td>";
-            // line 13
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["p"], "personnel", [], "any", false, false, false, 13), "prenom", [], "any", false, false, false, 13), "html", null, true);
-            yield " ";
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["p"], "personnel", [], "any", false, false, false, 13), "nom", [], "any", false, false, false, 13), "html", null, true);
-            yield "</td>
-          <td><!-- actions --></td>
+        // line 11
+        yield "    <h1>Liste des plannings</h1>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Plage</th>
+            <th>Personnel</th>
+            <th>Groupe</th>
+            <th>Libellé</th>
         </tr>
-      ";
+        ";
+        // line 20
+        $context['_parent'] = $context;
+        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["plannings"]) || array_key_exists("plannings", $context) ? $context["plannings"] : (function () { throw new RuntimeError('Variable "plannings" does not exist.', 20, $this->source); })()));
+        foreach ($context['_seq'] as $context["_key"] => $context["planning"]) {
+            // line 21
+            yield "            <tr>
+                <td>";
+            // line 22
+            yield (((($tmp = CoreExtension::getAttribute($this->env, $this->source, $context["planning"], "date", [], "any", false, false, false, 22)) && $tmp instanceof Markup ? (string) $tmp : $tmp)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["planning"], "date", [], "any", false, false, false, 22), "d/m/Y"), "html", null, true)) : ("-"));
+            yield "</td>
+                <td>";
+            // line 23
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["planning"], "plage", [], "any", false, false, false, 23), "html", null, true);
+            yield "</td>
+                <td>
+                    ";
+            // line 25
+            if ((($tmp = CoreExtension::getAttribute($this->env, $this->source, $context["planning"], "personnel", [], "any", false, false, false, 25)) && $tmp instanceof Markup ? (string) $tmp : $tmp)) {
+                // line 26
+                yield "                        ";
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["planning"], "personnel", [], "any", false, false, false, 26), "prenom", [], "any", false, false, false, 26), "html", null, true);
+                yield " ";
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["planning"], "personnel", [], "any", false, false, false, 26), "nom", [], "any", false, false, false, 26), "html", null, true);
+                yield "
+                    ";
+            } else {
+                // line 28
+                yield "                        Besoin de personnel
+                    ";
+            }
+            // line 30
+            yield "                </td>
+                <td>";
+            // line 31
+            yield (((CoreExtension::getAttribute($this->env, $this->source, $context["planning"], "personnel", [], "any", false, false, false, 31) && CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["planning"], "personnel", [], "any", false, false, false, 31), "groupe", [], "any", false, false, false, 31))) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["planning"], "personnel", [], "any", false, false, false, 31), "groupe", [], "any", false, false, false, 31), "id", [], "any", false, false, false, 31), "html", null, true)) : ("-"));
+            yield "</td>
+                <td>";
+            // line 32
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["planning"], "libelle", [], "any", false, false, false, 32), "html", null, true);
+            yield "</td>
+            </tr>
+        ";
         }
         $_parent = $context['_parent'];
-        unset($context['_seq'], $context['_key'], $context['p'], $context['_parent']);
+        unset($context['_seq'], $context['_key'], $context['planning'], $context['_parent']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 17
-        yield "    </tbody>
-  </table>
+        // line 35
+        yield "    </table>
+    <a href=\"";
+        // line 36
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_calendar");
+        yield "\">Retour au calendrier</a>
+    ";
+        // line 37
+        yield $this->extensions['Symfony\WebpackEncoreBundle\Twig\EntryFilesTwigExtension']->renderWebpackScriptTags("app");
+        yield "
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -167,29 +226,49 @@ class __TwigTemplate_e2a919b29e64256770464301d3eb71b4 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  137 => 17,  125 => 13,  121 => 12,  117 => 11,  114 => 10,  110 => 9,  103 => 5,  100 => 4,  87 => 3,  64 => 2,  41 => 1,);
+        return array (  196 => 37,  192 => 36,  189 => 35,  180 => 32,  176 => 31,  173 => 30,  169 => 28,  161 => 26,  159 => 25,  154 => 23,  150 => 22,  147 => 21,  143 => 20,  132 => 11,  119 => 10,  106 => 7,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
     }
 
     public function getSourceContext(): Source
     {
         return new Source("{% extends 'base.html.twig' %}
+
 {% block title %}Liste des plannings{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
 {% block body %}
-  <h2>Plannings</h2>
-  <a href=\"{{ path('planning_new') }}\" class=\"btn btn-primary mb-3\">Ajouter</a>
-  <table class=\"table\">
-    <thead><tr><th>Date</th><th>Plage</th><th>Personnel</th><th>Action</th></tr></thead>
-    <tbody>
-      {% for p in plannings %}
+    <h1>Liste des plannings</h1>
+    <table>
         <tr>
-          <td>{{ p.date|date('Y-m-d') }}</td>
-          <td>{{ p.plage }}</td>
-          <td>{{ p.personnel.prenom }} {{ p.personnel.nom }}</td>
-          <td><!-- actions --></td>
+            <th>Date</th>
+            <th>Plage</th>
+            <th>Personnel</th>
+            <th>Groupe</th>
+            <th>Libellé</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-{% endblock %}", "planning/list.html.twig", "C:\\wamp64\\www\\planningApp\\templates\\planning\\list.html.twig");
+        {% for planning in plannings %}
+            <tr>
+                <td>{{ planning.date ? planning.date|date('d/m/Y') : '-' }}</td>
+                <td>{{ planning.plage }}</td>
+                <td>
+                    {% if planning.personnel %}
+                        {{ planning.personnel.prenom }} {{ planning.personnel.nom }}
+                    {% else %}
+                        Besoin de personnel
+                    {% endif %}
+                </td>
+                <td>{{ planning.personnel and planning.personnel.groupe ? planning.personnel.groupe.id : '-' }}</td>
+                <td>{{ planning.libelle }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href=\"{{ path('planning_calendar') }}\">Retour au calendrier</a>
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+", "planning/list.html.twig", "C:\\wamp64\\www\\planningApp\\templates\\planning\\list.html.twig");
     }
 }

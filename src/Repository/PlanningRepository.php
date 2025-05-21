@@ -15,6 +15,17 @@ class PlanningRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Planning::class);
     }
+    public function findByGroupe($groupeId)
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.personnel', 'pers')
+            ->join('pers.groupe', 'g')
+            ->where('g.id = :groupeId')
+            ->setParameter('groupeId', $groupeId)
+            ->getQuery()
+            ->getResult();
+    }
+
 
     //    /**
     //     * @return Planning[] Returns an array of Planning objects

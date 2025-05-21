@@ -1,22 +1,17 @@
-{# templates/planning/calendar.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Planning - Calendrier{% endblock %}
 
-{% block body %}
-    <div class="container mt-4">
-        <h1>Planning</h1>
-        <div id="calendar"></div>
-        <button id="generate" class="btn btn-primary mt-3">Générer automatiquement</button>
-    </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('app') }}
-{% endblock %}
-
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="/node_modules/@fullcalendar/core/main.global.min.css">
+    <link rel="stylesheet" href="/node_modules/@fullcalendar/daygrid/main.global.min.css">
+    <link rel="stylesheet" href="/node_modules/@fullcalendar/timegrid/main.global.min.css">
     {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block body %}
+    <div id="calendar"></div>
+    <button id="generate">Générer automatiquement</button>
+    {{ encore_entry_script_tags('app') }}
 {% endblock %}

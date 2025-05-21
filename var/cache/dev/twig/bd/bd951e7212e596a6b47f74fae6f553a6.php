@@ -33,7 +33,9 @@ class __TwigTemplate_c2af260a8f4bc59eb1238743abfbb0c2 extends Template
 
         $this->blocks = [
             'title' => [$this, 'block_title'],
+            'stylesheets' => [$this, 'block_stylesheets'],
             'body' => [$this, 'block_body'],
+            'javascripts' => [$this, 'block_javascripts'],
         ];
     }
 
@@ -48,50 +50,35 @@ class __TwigTemplate_c2af260a8f4bc59eb1238743abfbb0c2 extends Template
 
         // line 1
         yield "<!DOCTYPE html>
-<html>
+<html lang=\"fr\">
 <head>
-  <meta charset=\"UTF-8\">
-  <title>";
+    <meta charset=\"UTF-8\">
+    <title>";
         // line 5
         yield from $this->unwrap()->yieldBlock('title', $context, $blocks);
         yield "</title>
-  <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css\">
-  <link href=\"https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.css\" rel=\"stylesheet\"/>
-</head>
+    ";
+        // line 6
+        yield from $this->unwrap()->yieldBlock('stylesheets', $context, $blocks);
+        // line 7
+        yield "</head>
 <body>
-<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">
-  <div class=\"container-fluid\">
-    <a class=\"navbar-brand\" href=\"";
-        // line 12
-        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_home");
-        yield "\">PlanningApp</a>
-    <div class=\"collapse navbar-collapse\">
-      <ul class=\"navbar-nav me-auto\">
-        <li class=\"nav-item\"><a class=\"nav-link\" href=\"";
-        // line 15
-        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_list");
-        yield "\">Plannings</a></li>
-        <li class=\"nav-item\"><a class=\"nav-link\" href=\"";
-        // line 16
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_generate", ["year" => "2025", "week" => "1"]), "html", null, true);
-        yield "\">Générer</a></li>
-        <li class=\"nav-item\"><a class=\"nav-link\" href=\"";
-        // line 17
-        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("personnel_list");
-        yield "\">Personnel</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<script src=\"https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js\"></script>
-<div class=\"container mt-4\">
-  ";
-        // line 24
+    <header>
+        <!-- Ton menu ou barre de navigation -->
+    </header>
+    <main>
+        ";
+        // line 13
         yield from $this->unwrap()->yieldBlock('body', $context, $blocks);
-        // line 25
-        yield "</div>
-</body>
-</html>";
+        // line 14
+        yield "    </main>
+    ";
+        // line 15
+        yield from $this->unwrap()->yieldBlock('javascripts', $context, $blocks);
+        // line 16
+        yield "</body>
+</html>
+";
         
         $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
 
@@ -114,7 +101,7 @@ class __TwigTemplate_c2af260a8f4bc59eb1238743abfbb0c2 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
 
-        yield "Gestion Planning";
+        yield "Planning App";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -124,7 +111,29 @@ class __TwigTemplate_c2af260a8f4bc59eb1238743abfbb0c2 extends Template
         yield from [];
     }
 
-    // line 24
+    // line 6
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_stylesheets(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "stylesheets"));
+
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "stylesheets"));
+
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
+
+        yield from [];
+    }
+
+    // line 13
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -146,6 +155,28 @@ class __TwigTemplate_c2af260a8f4bc59eb1238743abfbb0c2 extends Template
         yield from [];
     }
 
+    // line 15
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_javascripts(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
+
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
+
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
+
+        yield from [];
+    }
+
     /**
      * @codeCoverageIgnore
      */
@@ -157,47 +188,30 @@ class __TwigTemplate_c2af260a8f4bc59eb1238743abfbb0c2 extends Template
     /**
      * @codeCoverageIgnore
      */
-    public function isTraitable(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
     public function getDebugInfo(): array
     {
-        return array (  128 => 24,  105 => 5,  92 => 25,  90 => 24,  80 => 17,  76 => 16,  72 => 15,  66 => 12,  56 => 5,  50 => 1,);
+        return array (  159 => 15,  137 => 13,  115 => 6,  92 => 5,  79 => 16,  77 => 15,  74 => 14,  72 => 13,  64 => 7,  62 => 6,  58 => 5,  52 => 1,);
     }
 
     public function getSourceContext(): Source
     {
         return new Source("<!DOCTYPE html>
-<html>
+<html lang=\"fr\">
 <head>
-  <meta charset=\"UTF-8\">
-  <title>{% block title %}Gestion Planning{% endblock %}</title>
-  <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css\">
-  <link href=\"https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.css\" rel=\"stylesheet\"/>
+    <meta charset=\"UTF-8\">
+    <title>{% block title %}Planning App{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
 </head>
 <body>
-<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">
-  <div class=\"container-fluid\">
-    <a class=\"navbar-brand\" href=\"{{ path('app_home') }}\">PlanningApp</a>
-    <div class=\"collapse navbar-collapse\">
-      <ul class=\"navbar-nav me-auto\">
-        <li class=\"nav-item\"><a class=\"nav-link\" href=\"{{ path('planning_list') }}\">Plannings</a></li>
-        <li class=\"nav-item\"><a class=\"nav-link\" href=\"{{ path('planning_generate', {'year': '2025','week':'1'}) }}\">Générer</a></li>
-        <li class=\"nav-item\"><a class=\"nav-link\" href=\"{{ path('personnel_list') }}\">Personnel</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<script src=\"https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js\"></script>
-<div class=\"container mt-4\">
-  {% block body %}{% endblock %}
-</div>
+    <header>
+        <!-- Ton menu ou barre de navigation -->
+    </header>
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+    {% block javascripts %}{% endblock %}
 </body>
-</html>", "base.html.twig", "C:\\wamp64\\www\\planningApp\\templates\\base.html.twig");
+</html>
+", "base.html.twig", "C:\\wamp64\\www\\planningApp\\templates\\base.html.twig");
     }
 }

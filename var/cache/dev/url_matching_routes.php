@@ -18,6 +18,7 @@ return [
         '/personnel/list' => [[['_route' => 'personnel_list', '_controller' => 'App\\Controller\\PersonnelController::list'], null, null, null, false, false, null]],
         '/personnel/new' => [[['_route' => 'personnel_new', '_controller' => 'App\\Controller\\PersonnelController::new'], null, null, null, false, false, null]],
         '/personnel/personnel/indisponibilite' => [[['_route' => 'personnel_indisponibilite', '_controller' => 'App\\Controller\\PersonnelController::nouvelleIndisponibilite'], null, null, null, false, false, null]],
+        '/planning/add-ajax' => [[['_route' => 'planning_add_ajax', '_controller' => 'App\\Controller\\PlanningController::addAjax'], null, ['POST' => 0], null, false, false, null]],
         '/planning/generate-ajax' => [[['_route' => 'planning_generate_ajax', '_controller' => 'App\\Controller\\PlanningController::generateAjax'], null, ['POST' => 0], null, false, false, null]],
         '/planning/events' => [[['_route' => 'planning_events', '_controller' => 'App\\Controller\\PlanningController::events'], null, null, null, false, false, null]],
         '/planning/calendar' => [[['_route' => 'planning_calendar', '_controller' => 'App\\Controller\\PlanningController::calendar'], null, null, null, false, false, null]],
