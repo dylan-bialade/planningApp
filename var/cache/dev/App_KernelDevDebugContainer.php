@@ -16,7 +16,7 @@ if (!\class_exists(App_KernelDevDebugContainer::class, false)) {
 
 return new \ContainerCAlJTnf\App_KernelDevDebugContainer([
     'container.build_hash' => 'CAlJTnf',
-    'container.build_id' => '1ac21503',
-    'container.build_time' => 1747820962,
+    'container.build_id' => 'fad297a8',
+    'container.build_time' => 1747827344,
     'container.runtime_mode' => \in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true) ? 'web=0' : 'web=1',
 ], __DIR__.\DIRECTORY_SEPARATOR.'ContainerCAlJTnf');

@@ -214,3 +214,9 @@ b5b584,127.0.0.1,GET,http://127.0.0.1:8000/favicon.ico,1747821977,,404,request
 23d0a0,127.0.0.1,GET,http://127.0.0.1:8000/planning/calendar,1747822275,,200,request
 ffa3a6,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747822275,300e71,404,request
 300e71,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747822275,,404,request
+799ec0,127.0.0.1,GET,http://127.0.0.1:8000/planning/calendar,1747827347,,200,request
+f8f1ad,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747827347,8eb28f,404,request
+8eb28f,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747827347,,404,request
+3eb2a4,127.0.0.1,GET,http://127.0.0.1:8000/planning/calendar,1747828518,,200,request
+b78439,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747828519,606863,404,request
+606863,127.0.0.1,GET,http://127.0.0.1:8000/.well-known/appspecific/com.chrome.devtools.json,1747828519,,404,request
