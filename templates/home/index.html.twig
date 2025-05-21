@@ -1,0 +1,32 @@
+{# templates/home/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Bienvenue sur votre outil de gestion de plannings</h1>
+    <ul class="list-group mt-4">
+        <li class="list-group-item">
+            <a href="{{ path('planning_new') }}">Créer un planning manuellement</a>
+        </li>
+        <li class="list-group-item">
+            <a href="{{ path('planning_generate', {'year': "now"|date("Y"), 'week': "now"|date("W")}) }}">
+                Générer automatiquement le planning de la semaine en cours
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="{{ path('personnel_new') }}">Ajouter un nouveau personnel</a>
+        </li>
+        <li class="list-group-item">
+            <a href="{{ path('personnel_indisponibilite') }}">Déclarer une indisponibilité</a>
+        </li>
+        <li class="list-group-item">
+            <a href="{{ path('planning_list') }}">Voir tous les plannings</a>
+        <li class="list-group-item">
+        <a href="{{ path('planning_calendar') }}">Calendrier interactif</a>
+        </li>
+
+    </ul>
+</div>
+{% endblock %}

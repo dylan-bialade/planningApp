@@ -234,5 +234,73 @@ class Personnel
 
         return max(0, $this->heuresMensuelles - $totalHeures);
     }
+    
+
+    
+    /**
+ * Vérifie si le personnel est disponible sur ce jour + plage,
+ * en tenant compte des indisponibilités et disponibilités déclarées.
+ */
+    public function isDisponible(\DateTime $day, string $plage): bool
+    {
+        // 1. Si une indisponibilité existe ce jour/plage → false
+        foreach ($this->indisponibilites as $indispo) {
+            if (
+                $indispo->getDate()->format('Y-m-d') === $day->format('Y-m-d')
+                && $indispo->getPlage() === $plage
+            ) {
+                return false;
+            }
+        }
+        // 2. Sinon, si une disponibilité explicite existe → prendre la valeur booléenne
+        foreach ($this->jourSemaine as $disp) {
+            if (
+                $disp->getJourSemaine() === $day->format('l')
+                && $disp->getPlage() === $plage
+            ) {
+                return $disp->isDispo();
+            }
+        }
+        // Par défaut, on considère dispo pour les intérimaires, sinon false
+        return $this->statut === 'interimaire';
+    }
+
+    /**
+     * Vérifie 11h de repos minimum entre le dernier service et ce jour/plage,
+     * et 2 jours de repos par semaine.
+     */
+    public function peutAccepterHeures(\DateTime $day, string $plage): bool
+    {
+        // 1. Recherche derniers plannings précédents
+        $previous = [];
+        foreach ($this->plannings as $pl) {
+            if ($pl->getDate() < $day) {
+                $previous[] = $pl;
+            }
+        }
+        usort($previous, fn($a, $b) => $b->getDate()->getTimestamp() <=> $a->getDate()->getTimestamp());
+
+        if (!empty($previous)) {
+            $last = $previous[0];
+            // calcul intervalle en heures
+            $diff = $last->getDateFin()->diff(new \DateTime($day->format('Y-m-d').' 00:00:00'));
+            if ($diff->h < 11) {
+                return false;
+            }
+        }
+        // 2. Vérifier qu’il n’a pas déjà 2 jours de suite de service dans la semaine
+        $weekNum = (int)$day->format('W');
+        $countDays = [];
+        foreach ($this->plannings as $pl) {
+            if ((int)$pl->getDate()->format('W') === $weekNum) {
+                $countDays[$pl->getDate()->format('Y-m-d')] = true;
+            }
+        }
+        if (count($countDays) >= 5) {
+            return false; // déjà 5 jours travaillés → doit avoir 2 jours off
+        }
+        return true;
+    }
+
 
 }

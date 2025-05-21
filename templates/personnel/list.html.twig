@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block title %}Liste du personnel{% endblock %}
+{% block body %}
+  <h2>Personnel</h2>
+  <a href="{{ path('personnel_new') }}" class="btn btn-primary mb-3">Ajouter</a>
+  <table class="table">
+    <thead><tr><th>Nom</th><th>Prénom</th><th>Statut</th><th>Heures/mois</th><th>Action</th></tr></thead>
+    <tbody>
+      {% for u in personnels %}
+        <tr>
+          <td>{{ u.nom }}</td>
+          <td>{{ u.prenom }}</td>
+          <td>{{ u.statut }}</td>
+          <td>{{ u.heuresMensuelles }}</td>
+          <td><a href="{{ path('personnel_dispo', {id:u.id}) }}">Indispo</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

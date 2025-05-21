@@ -356,49 +356,73 @@
     <service id="App\Entity" class="App\Entity" abstract="true">
       <tag name="container.excluded" source="in &quot;config/services.yaml&quot;"/>
     </service>
+    <service id="App\Controller\HomeController" class="App\Controller\HomeController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\HomeController"/>
+      </call>
+    </service>
+    <service id="App\Controller\PersonnelController" class="App\Controller\PersonnelController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\PersonnelController"/>
+      </call>
+    </service>
     <service id="App\Controller\PlanningController" class="App\Controller\PlanningController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
+      <argument type="service" id="App\Service\PlanningGenerator"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\PlanningController"/>
       </call>
     </service>
-    <service id="App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true">
+    <service id="App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" public="true" autowire="true" autoconfigure="true">
       <tag name="doctrine.fixture.orm"/>
     </service>
-    <service id="App\DataFixtures\PlanningFixtures" class="App\DataFixtures\PlanningFixtures" autowire="true" autoconfigure="true">
+    <service id="App\DataFixtures\PlanningFixtures" class="App\DataFixtures\PlanningFixtures" public="true" autowire="true" autoconfigure="true">
       <tag name="doctrine.fixture.orm"/>
     </service>
-    <service id="App\Form\PlanningType" class="App\Form\PlanningType" autowire="true" autoconfigure="true">
+    <service id="App\Form\IndisponibiliteType" class="App\Form\IndisponibiliteType" public="true" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
-    <service id="App\Repository\BesoinRepository" class="App\Repository\BesoinRepository" autowire="true" autoconfigure="true">
+    <service id="App\Form\PersonnelType" class="App\Form\PersonnelType" public="true" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
+    </service>
+    <service id="App\Form\PlanningType" class="App\Form\PlanningType" public="true" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
+    </service>
+    <service id="App\Repository\BesoinRepository" class="App\Repository\BesoinRepository" public="true" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
-    <service id="App\Repository\DisponibiliteRepository" class="App\Repository\DisponibiliteRepository" autowire="true" autoconfigure="true">
+    <service id="App\Repository\DisponibiliteRepository" class="App\Repository\DisponibiliteRepository" public="true" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
-    <service id="App\Repository\GroupeRepository" class="App\Repository\GroupeRepository" autowire="true" autoconfigure="true">
+    <service id="App\Repository\GroupeRepository" class="App\Repository\GroupeRepository" public="true" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
-    <service id="App\Repository\IndisponibiliteRepository" class="App\Repository\IndisponibiliteRepository" autowire="true" autoconfigure="true">
+    <service id="App\Repository\IndisponibiliteRepository" class="App\Repository\IndisponibiliteRepository" public="true" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
-    <service id="App\Repository\PersonnelRepository" class="App\Repository\PersonnelRepository" autowire="true" autoconfigure="true">
+    <service id="App\Repository\PersonnelRepository" class="App\Repository\PersonnelRepository" public="true" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
-    <service id="App\Repository\PlanningRepository" class="App\Repository\PlanningRepository" autowire="true" autoconfigure="true">
+    <service id="App\Repository\PlanningRepository" class="App\Repository\PlanningRepository" public="true" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
-    <service id="App\Repository\StructureRepository" class="App\Repository\StructureRepository" autowire="true" autoconfigure="true">
+    <service id="App\Repository\StructureRepository" class="App\Repository\StructureRepository" public="true" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Service\PlanningGenerator" class="App\Service\PlanningGenerator" public="true" autowire="true" autoconfigure="true">
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
     </service>
     <service id="argument_metadata_factory" class="Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory"/>
     <service id="argument_resolver.backed_enum_resolver" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver">
@@ -427,7 +451,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.dUfnokA"/>
+      <argument type="service" id=".service_locator.ul3KTjO"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -1348,6 +1372,8 @@
         <argument>Symfony\Bridge\Doctrine\Form\Type</argument>
       </argument>
       <argument type="collection">
+        <argument>App\Form\IndisponibiliteType</argument>
+        <argument>App\Form\PersonnelType</argument>
         <argument>App\Form\PlanningType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\FormType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\ChoiceType</argument>
@@ -3319,7 +3345,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.dUfnokA"/>
+      <argument type="service" id=".service_locator.ul3KTjO"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -3808,7 +3834,7 @@
       <argument type="service" id="form.registry"/>
     </service>
     <service id="form.extension" class="Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension">
-      <argument type="service" id=".service_locator.YGbXzy5"/>
+      <argument type="service" id=".service_locator..hcxqRI"/>
       <argument type="collection">
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="iterator">
           <argument type="service" id="form.type_extension.form.transformation_failure_handling"/>
@@ -7091,29 +7117,39 @@
     <service id="doctrine.fixtures.purger.orm_purger_factory" class="Doctrine\Bundle\FixturesBundle\Purger\ORMPurgerFactory">
       <tag name="doctrine.fixtures.purger_factory" alias="default"/>
     </service>
-    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\PlanningController" class="App\Controller\PlanningController" autowire="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\PlanningController" class="App\Controller\PlanningController" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Controller\PlanningController" class="App\Controller\PlanningController" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\PlanningFixtures" class="App\DataFixtures\PlanningFixtures" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\DataFixtures\PlanningFixtures" class="App\DataFixtures\PlanningFixtures" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\PlanningType" class="App\Form\PlanningType" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Form\PlanningType" class="App\Form\PlanningType" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\BesoinRepository" class="App\Repository\BesoinRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\BesoinRepository" class="App\Repository\BesoinRepository" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\DisponibiliteRepository" class="App\Repository\DisponibiliteRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\DisponibiliteRepository" class="App\Repository\DisponibiliteRepository" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\GroupeRepository" class="App\Repository\GroupeRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\GroupeRepository" class="App\Repository\GroupeRepository" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\IndisponibiliteRepository" class="App\Repository\IndisponibiliteRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\IndisponibiliteRepository" class="App\Repository\IndisponibiliteRepository" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PersonnelRepository" class="App\Repository\PersonnelRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\PersonnelRepository" class="App\Repository\PersonnelRepository" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PlanningRepository" class="App\Repository\PlanningRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\PlanningRepository" class="App\Repository\PlanningRepository" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\StructureRepository" class="App\Repository\StructureRepository" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Repository\StructureRepository" class="App\Repository\StructureRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\HomeController" class="App\Controller\HomeController" public="true" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\HomeController" class="App\Controller\HomeController" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\HomeController" class="App\Controller\HomeController" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\PersonnelController" class="App\Controller\PersonnelController" public="true" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\PersonnelController" class="App\Controller\PersonnelController" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\PersonnelController" class="App\Controller\PersonnelController" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\PlanningController" class="App\Controller\PlanningController" public="true" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\PlanningController" class="App\Controller\PlanningController" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\PlanningController" class="App\Controller\PlanningController" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\DataFixtures\AppFixtures" class="App\DataFixtures\AppFixtures" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\FixturesBundle\ORMFixtureInterface.0.App\DataFixtures\PlanningFixtures" class="App\DataFixtures\PlanningFixtures" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\DataFixtures\PlanningFixtures" class="App\DataFixtures\PlanningFixtures" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\IndisponibiliteType" class="App\Form\IndisponibiliteType" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\IndisponibiliteType" class="App\Form\IndisponibiliteType" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\PersonnelType" class="App\Form\PersonnelType" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\PersonnelType" class="App\Form\PersonnelType" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\PlanningType" class="App\Form\PlanningType" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\PlanningType" class="App\Form\PlanningType" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\BesoinRepository" class="App\Repository\BesoinRepository" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\BesoinRepository" class="App\Repository\BesoinRepository" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\DisponibiliteRepository" class="App\Repository\DisponibiliteRepository" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\DisponibiliteRepository" class="App\Repository\DisponibiliteRepository" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\GroupeRepository" class="App\Repository\GroupeRepository" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\GroupeRepository" class="App\Repository\GroupeRepository" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\IndisponibiliteRepository" class="App\Repository\IndisponibiliteRepository" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\IndisponibiliteRepository" class="App\Repository\IndisponibiliteRepository" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PersonnelRepository" class="App\Repository\PersonnelRepository" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\PersonnelRepository" class="App\Repository\PersonnelRepository" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PlanningRepository" class="App\Repository\PlanningRepository" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\PlanningRepository" class="App\Repository\PlanningRepository" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\StructureRepository" class="App\Repository\StructureRepository" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\StructureRepository" class="App\Repository\StructureRepository" public="true" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.w7.f4fT" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -7537,6 +7573,37 @@
         <argument key="loader" type="service_closure" id=".errored..service_locator.y4_Zrx..Symfony\Component\Config\Loader\LoaderInterface"/>
       </argument>
     </service>
+    <service id=".service_locator.g624QsX" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="repo" type="service_closure" id="App\Repository\PersonnelRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.9kKwU2t" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+      </argument>
+    </service>
+    <service id=".service_locator.SihLUsA" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="personnel" type="service_closure" id=".errored..service_locator.SihLUsA.App\Entity\Personnel"/>
+      </argument>
+    </service>
+    <service id=".service_locator.7qrnM9D" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="generator" type="service_closure" id="App\Service\PlanningGenerator"/>
+      </argument>
+    </service>
+    <service id=".service_locator.z3chYS3" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="repo" type="service_closure" id="App\Repository\PlanningRepository"/>
+      </argument>
+    </service>
     <service id=".service_locator..vn4bjL" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -7549,15 +7616,16 @@
         <argument key="personnel" type="service_closure" id=".errored..service_locator.yZHtf.2.App\Entity\Personnel"/>
       </argument>
     </service>
-    <service id=".service_locator.9kKwU2t" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.ul3KTjO" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
-      </argument>
-    </service>
-    <service id=".service_locator.dUfnokA" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator"/>
-      <argument type="collection">
+        <argument key="App\Controller\PersonnelController::dispo" type="service_closure" id=".service_locator.SihLUsA"/>
+        <argument key="App\Controller\PersonnelController::list" type="service_closure" id=".service_locator.g624QsX"/>
+        <argument key="App\Controller\PersonnelController::new" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\PersonnelController::nouvelleIndisponibilite" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\PlanningController::events" type="service_closure" id=".service_locator.z3chYS3"/>
+        <argument key="App\Controller\PlanningController::generate" type="service_closure" id=".service_locator.7qrnM9D"/>
+        <argument key="App\Controller\PlanningController::generateAjax" type="service_closure" id=".service_locator.7qrnM9D"/>
         <argument key="App\Controller\PlanningController::list" type="service_closure" id=".service_locator..vn4bjL"/>
         <argument key="App\Controller\PlanningController::new" type="service_closure" id=".service_locator.9kKwU2t"/>
         <argument key="App\Controller\PlanningController::voirTempsTravail" type="service_closure" id=".service_locator.yZHtf.2"/>
@@ -7565,6 +7633,13 @@
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
+        <argument key="App\Controller\PersonnelController:dispo" type="service_closure" id=".service_locator.SihLUsA"/>
+        <argument key="App\Controller\PersonnelController:list" type="service_closure" id=".service_locator.g624QsX"/>
+        <argument key="App\Controller\PersonnelController:new" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\PersonnelController:nouvelleIndisponibilite" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\PlanningController:events" type="service_closure" id=".service_locator.z3chYS3"/>
+        <argument key="App\Controller\PlanningController:generate" type="service_closure" id=".service_locator.7qrnM9D"/>
+        <argument key="App\Controller\PlanningController:generateAjax" type="service_closure" id=".service_locator.7qrnM9D"/>
         <argument key="App\Controller\PlanningController:list" type="service_closure" id=".service_locator..vn4bjL"/>
         <argument key="App\Controller\PlanningController:new" type="service_closure" id=".service_locator.9kKwU2t"/>
         <argument key="App\Controller\PlanningController:voirTempsTravail" type="service_closure" id=".service_locator.yZHtf.2"/>
@@ -7729,9 +7804,11 @@
       <argument type="service" id="argument_resolver.query_parameter_value_resolver"/>
       <argument type="service" id="debug.stopwatch"/>
     </service>
-    <service id=".service_locator.YGbXzy5" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..hcxqRI" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Form\IndisponibiliteType" type="service_closure" id="App\Form\IndisponibiliteType"/>
+        <argument key="App\Form\PersonnelType" type="service_closure" id="App\Form\PersonnelType"/>
         <argument key="App\Form\PlanningType" type="service_closure" id="App\Form\PlanningType"/>
         <argument key="Symfony\Bridge\Doctrine\Form\Type\EntityType" type="service_closure" id="form.type.entity"/>
         <argument key="Symfony\Component\Form\Extension\Core\Type\ChoiceType" type="service_closure" id="form.type.choice"/>
@@ -8185,6 +8262,18 @@
         <argument key="web_link.http_header_serializer" type="service_closure" id="web_link.http_header_serializer" on-invalid="ignore"/>
       </argument>
     </service>
+    <service id=".service_locator.O2p6Lk7.App\Controller\HomeController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\HomeController"/>
+      <argument>App\Controller\HomeController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.O2p6Lk7" method="withContext"/>
+    </service>
+    <service id=".service_locator.O2p6Lk7.App\Controller\PersonnelController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\PersonnelController"/>
+      <argument>App\Controller\PersonnelController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.O2p6Lk7" method="withContext"/>
+    </service>
     <service id=".service_locator.O2p6Lk7.App\Controller\PlanningController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\PlanningController"/>
       <argument>App\Controller\PlanningController</argument>
@@ -8365,6 +8454,8 @@
       <call method="allowControllers">
         <argument type="collection">
           <argument>App\Kernel</argument>
+          <argument>App\Controller\HomeController</argument>
+          <argument>App\Controller\PersonnelController</argument>
           <argument>App\Controller\PlanningController</argument>
           <argument>Doctrine\Bundle\DoctrineBundle\Controller\ProfilerController</argument>
         </argument>
@@ -8566,6 +8657,9 @@
     <service id="debug.security.event_dispatcher.main.inner" class="Symfony\Component\EventDispatcher\EventDispatcher"/>
     <service id=".errored..service_locator.y4_Zrx..Symfony\Component\Config\Loader\LoaderInterface" class="Symfony\Component\Config\Loader\LoaderInterface">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.y4_Zrx.&quot;: it needs an instance of &quot;Symfony\Component\Config\Loader\LoaderInterface&quot; but this type has been excluded from autowiring."/>
+    </service>
+    <service id=".errored..service_locator.SihLUsA.App\Entity\Personnel" class="App\Entity\Personnel">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.SihLUsA&quot;: it needs an instance of &quot;App\Entity\Personnel&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
     </service>
     <service id=".errored..service_locator.yZHtf.2.App\Entity\Personnel" class="App\Entity\Personnel">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.yZHtf.2&quot;: it needs an instance of &quot;App\Entity\Personnel&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
@@ -9758,7 +9852,7 @@
     <service id="Psr\Log\LoggerInterface" alias="monolog.logger"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.w7.f4fT" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.dUfnokA"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.ul3KTjO"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -9782,9 +9876,10 @@
     <service id=".service_locator.80edgLI" alias="messenger.receiver_locator"/>
     <service id=".service_locator.h8Jkkd2" alias="messenger.retry_strategy_locator"/>
     <service id=".service_locator.bJ.4HC5" alias=".service_locator.w7.f4fT"/>
-    <service id=".service_locator.DUk0nD6" alias=".service_locator.dUfnokA"/>
+    <service id=".service_locator.zBnrLKh" alias=".service_locator.SihLUsA"/>
+    <service id=".service_locator.JnDA4JE" alias=".service_locator.ul3KTjO"/>
     <service id=".service_locator.BFrsqsn" alias=".service_locator.F9PKc.7"/>
-    <service id=".service_locator.HNPf07y" alias=".service_locator.YGbXzy5"/>
+    <service id=".service_locator.vm0Lz4c" alias=".service_locator..hcxqRI"/>
     <service id=".service_locator.XtmiKbi" alias=".service_locator.MfxSDRP"/>
     <service id=".service_locator.O24_MAy" alias=".service_locator.yY.p4P7"/>
     <service id=".service_locator.jUv.zyj" alias=".service_locator.O2p6Lk7"/>
@@ -9808,9 +9903,13 @@
     <service id="doctrine.orm.default_metadata_driver" alias=".doctrine.orm.default_metadata_driver"/>
     <service id="security.event_dispatcher.main" alias="debug.security.event_dispatcher.main"/>
     <service id=".service_locator.gFlme_s" alias=".service_locator.y4_Zrx."/>
+    <service id=".service_locator.M0hkygE" alias=".service_locator.g624QsX"/>
+    <service id=".service_locator.gaTSUXr" alias=".service_locator.9kKwU2t"/>
+    <service id=".service_locator.DFhX9uY" alias=".service_locator.SihLUsA"/>
+    <service id=".service_locator.oEy._RA" alias=".service_locator.7qrnM9D"/>
+    <service id=".service_locator.ASb3Be8" alias=".service_locator.z3chYS3"/>
     <service id=".service_locator.L2yCVht" alias=".service_locator..vn4bjL"/>
     <service id=".service_locator.QcjtXw1" alias=".service_locator.yZHtf.2"/>
-    <service id=".service_locator.gaTSUXr" alias=".service_locator.9kKwU2t"/>
     <service id=".service_locator.Q1z.f9O" alias=".service_locator.O2p6Lk7"/>
     <service id=".service_locator.dGUCsbe" alias=".service_locator.oR77BOj"/>
     <service id=".service_locator._kIAbz1" alias=".service_locator.TpoC7U9"/>

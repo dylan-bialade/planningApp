@@ -15,6 +15,21 @@ class BesoinRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Besoin::class);
     }
+    
+    public function findByDate(\DateTimeInterface $day): array
+    {
+        $start = (clone $day)->setTime(0, 0);
+        $end   = (clone $day)->setTime(23, 59);
+
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.date BETWEEN :start AND :end')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
     //    /**
     //     * @return Besoin[] Returns an array of Besoin objects

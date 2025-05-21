@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %}
+{% block title %}Indisponibilités{% endblock %}
+{% block body %}
+  <h2>Indisponibilités de {{ personnel.prenom }}</h2>
+  {{ form_start(form) }} {{ form_widget(form) }} <button class="btn btn-warning">Ajouter</button> {{ form_end(form) }}
+{% endblock %}

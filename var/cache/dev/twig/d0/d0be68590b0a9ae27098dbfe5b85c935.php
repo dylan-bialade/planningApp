@@ -60,7 +60,7 @@ class __TwigTemplate_e18c2823d6c82ff41e68beb48f471492 extends Template
 
     }
 
-    // line 3
+    // line 2
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -73,7 +73,7 @@ class __TwigTemplate_e18c2823d6c82ff41e68beb48f471492 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
 
-        yield "Ajouter un planning";
+        yield "Nouveau planning";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -83,7 +83,7 @@ class __TwigTemplate_e18c2823d6c82ff41e68beb48f471492 extends Template
         yield from [];
     }
 
-    // line 5
+    // line 3
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -96,58 +96,21 @@ class __TwigTemplate_e18c2823d6c82ff41e68beb48f471492 extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
 
+        // line 4
+        yield "  <h2>Créer un planning</h2>
+  ";
+        // line 5
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 5, $this->source); })()), 'form_start');
+        yield "
+    ";
         // line 6
-        yield "    <h1>Ajouter un planning</h1>
-
-    ";
+        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 6, $this->source); })()), 'widget');
+        yield "
+    <button class=\"btn btn-success\">Enregistrer</button>
+  ";
         // line 8
-        $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 8, $this->source); })()), "flashes", ["error"], "method", false, false, false, 8));
-        foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
-            // line 9
-            yield "        <div class=\"alert alert-danger\">";
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["message"], "html", null, true);
-            yield "</div>
-    ";
-        }
-        $_parent = $context['_parent'];
-        unset($context['_seq'], $context['_key'], $context['message'], $context['_parent']);
-        $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 11
-        yield "    ";
-        $context['_parent'] = $context;
-        $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 11, $this->source); })()), "flashes", ["success"], "method", false, false, false, 11));
-        foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
-            // line 12
-            yield "        <div class=\"alert alert-success\">";
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["message"], "html", null, true);
-            yield "</div>
-    ";
-        }
-        $_parent = $context['_parent'];
-        unset($context['_seq'], $context['_key'], $context['message'], $context['_parent']);
-        $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 14
+        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 8, $this->source); })()), 'form_end');
         yield "
-    ";
-        // line 15
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 15, $this->source); })()), 'form_start');
-        yield "
-        ";
-        // line 16
-        yield $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 16, $this->source); })()), 'widget');
-        yield "
-        <button class=\"btn btn-primary\">Enregistrer</button>
-    ";
-        // line 18
-        yield         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 18, $this->source); })()), 'form_end');
-        yield "
-
-    <br>
-    <a href=\"";
-        // line 21
-        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_list");
-        yield "\">Retour à la liste</a>
 ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
@@ -179,33 +142,19 @@ class __TwigTemplate_e18c2823d6c82ff41e68beb48f471492 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  149 => 21,  143 => 18,  138 => 16,  134 => 15,  131 => 14,  122 => 12,  117 => 11,  108 => 9,  104 => 8,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
+        return array (  112 => 8,  107 => 6,  103 => 5,  100 => 4,  87 => 3,  64 => 2,  41 => 1,);
     }
 
     public function getSourceContext(): Source
     {
         return new Source("{% extends 'base.html.twig' %}
-
-{% block title %}Ajouter un planning{% endblock %}
-
+{% block title %}Nouveau planning{% endblock %}
 {% block body %}
-    <h1>Ajouter un planning</h1>
-
-    {% for message in app.flashes('error') %}
-        <div class=\"alert alert-danger\">{{ message }}</div>
-    {% endfor %}
-    {% for message in app.flashes('success') %}
-        <div class=\"alert alert-success\">{{ message }}</div>
-    {% endfor %}
-
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class=\"btn btn-primary\">Enregistrer</button>
-    {{ form_end(form) }}
-
-    <br>
-    <a href=\"{{ path('planning_list') }}\">Retour à la liste</a>
-{% endblock %}
-", "planning/new.html.twig", "C:\\wamp64\\www\\planningApp\\templates\\planning\\new.html.twig");
+  <h2>Créer un planning</h2>
+  {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class=\"btn btn-success\">Enregistrer</button>
+  {{ form_end(form) }}
+{% endblock %}", "planning/new.html.twig", "C:\\wamp64\\www\\planningApp\\templates\\planning\\new.html.twig");
     }
 }

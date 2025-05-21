@@ -31,6 +31,21 @@ class Planning
 
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $dateFin = null;
+    
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $libelle = null;
+
+    public function getLibelle(): ?string
+    {
+        return $this->libelle;
+    }
+
+    public function setLibelle(?string $libelle): self
+    {
+        $this->libelle = $libelle;
+        return $this;
+    }
+
 
     public function getDuree(): int
     {
@@ -39,6 +54,19 @@ class Planning
         }
         return 0;
     }
+    public function getNomAffichage(): string
+    {
+        if ($this->getPersonnel() === null) {
+            return '🚨 Besoin de personnel';
+        }
+
+        $prenom = $this->getPersonnel()->getPrenom();
+        $nom = $this->getPersonnel()->getNom();
+        $groupe = $this->getPersonnel()->getGroupe()?->getId();
+
+        return sprintf('%s %s (Groupe %d)', $prenom, $nom, $groupe);
+    }
+
 
 
     public function getDateFin(): ?\DateTimeInterface
