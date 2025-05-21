@@ -2,93 +2,111 @@
 
 namespace App\Service;
 
-use App\Entity\Personnel;
 use App\Entity\Planning;
+use App\Entity\Groupe;
+use App\Entity\Personnel;
+use App\Repository\GroupeRepository;
+use App\Repository\PersonnelRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PlanningGenerator
 {
-    private EntityManagerInterface $em;
+    public function __construct(
+        private GroupeRepository $groupeRepo,
+        private PersonnelRepository $personnelRepo,
+        private EntityManagerInterface $em
+    ) {}
 
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-    }
-
+    /**
+     * Génère les plannings de toute une semaine ISO (matin + aprem) pour chaque groupe
+     */
     public function generateWeek(\DateTimeInterface $startOfWeek, int $morningCount = 2, int $afternoonCount = 2): void
     {
-        $personnels = $this->em->getRepository(Personnel::class)->findAll();
+        $groupes = $this->groupeRepo->findAll();
 
-        // Récupère les plannings existants de la semaine pour vérifier les repos
-        $existingPlannings = $this->em->getRepository(Planning::class)->findAll();
+        for ($day = 0; $day < 7; $day++) {
+            $date = (clone $startOfWeek)->modify("+$day days");
 
-        for ($i = 0; $i < 7; $i++) {
-            $day = (clone $startOfWeek)->modify("+{$i} days");
-            $shifts = [
-                ['06:45', '14:00'],
-                ['08:00', '16:00'],
-                ['14:00', '21:00'],
-                ['16:00', '22:00'],
-            ];
+            // Suivi global des personnels déjà affectés ce jour-là
+            $personnelsOccupesCeJour = [];
 
-            foreach ($shifts as $shift) {
-                $start = new \DateTime($day->format('Y-m-d') . ' ' . $shift[0]);
-                $end = new \DateTime($day->format('Y-m-d') . ' ' . $shift[1]);
+            foreach ($groupes as $groupe) {
+                $personnels = $this->personnelRepo->findBy(['groupe' => $groupe]);
 
-                $availablePersonnel = $this->findAvailablePersonnel($personnels, $existingPlannings, $start);
+                $shifts = [
+                    ['08:00', '12:00', $morningCount],
+                    ['14:00', '18:00', $afternoonCount],
+                ];
 
-                if ($availablePersonnel) {
-                    $planning = new Planning();
-                    $planning->setPersonnel($availablePersonnel);
-                    $planning->setDateDebut($start);
-                    $planning->setDateFin($end);
-                    $planning->setDate($day);
-                    $planning->setPlage($shift[0] . ' - ' . $shift[1]);
-                    $planning->setSource('auto'); // ou tout autre libellé comme 'généré automatiquement'
+                foreach ($shifts as [$startTime, $endTime, $needed]) {
+                    $start = new \DateTimeImmutable($date->format('Y-m-d') . ' ' . $startTime);
+                    $end   = new \DateTimeImmutable($date->format('Y-m-d') . ' ' . $endTime);
 
-                    $existingPlannings[] = $planning;
-                    $this->em->persist($planning);
-                } else {
-                    $planning = new Planning();
-                    $planning->setDateDebut($start);
-                    $planning->setDateFin($end);
-                    $planning->setDate($day);
-                    $planning->setPlage($shift[0] . ' - ' . $shift[1]);
-                    $planning->setSource('auto'); // ou tout autre libellé comme 'généré automatiquement'
+                    $assigned = 0;
 
-                    $planning->setLibelle("Besoin de personnel");
-                    $this->em->persist($planning);
+                    foreach ($personnels as $personnel) {
+                        if ($assigned >= $needed) break;
+
+                        if (
+                            !in_array($personnel->getId(), $personnelsOccupesCeJour, true) &&
+                            $this->isAvailable($personnel, $start, $end)
+                        ) {
+                            $planning = new Planning();
+                            $planning->setDate($date);
+                            $planning->setDateDebut($start);
+                            $planning->setDateFin($end);
+                            $planning->setPlage("$startTime - $endTime");
+                            $planning->setSource('auto');
+                            $planning->setPersonnel($personnel);
+                            $planning->setGroupe($groupe);
+                            $planning->setLibelle($personnel->getPrenom() . ' ' . $personnel->getNom());
+
+                            $this->em->persist($planning);
+
+                            $personnelsOccupesCeJour[] = $personnel->getId();
+                            $assigned++;
+                        }
+                    }
+
+                    // S'il manque des personnes : créer des créneaux vides
+                    for ($i = 0; $i < $needed - $assigned; $i++) {
+                        $planning = new Planning();
+                        $planning->setDate($date);
+                        $planning->setDateDebut($start);
+                        $planning->setDateFin($end);
+                        $planning->setPlage("$startTime - $endTime");
+                        $planning->setSource('auto');
+                        $planning->setGroupe($groupe);
+                        $planning->setLibelle('🛑 Besoin de personnel');
+
+                        $this->em->persist($planning);
+                    }
                 }
-
             }
         }
 
         $this->em->flush();
     }
 
-    private function findAvailablePersonnel(array $personnels, array $existingPlannings, \DateTimeInterface $shiftStart): ?Personnel
+    /**
+     * Vérifie si le personnel est dispo au créneau donné (et respecte 11h de repos)
+     */
+    private function isAvailable(Personnel $personnel, \DateTimeInterface $start, \DateTimeInterface $end): bool
     {
-        foreach ($personnels as $personnel) {
-            $canWork = true;
-
-            foreach ($existingPlannings as $planning) {
-                if ($planning->getPersonnel() === $personnel) {
-                    $lastEnd = $planning->getDateFin();
-                    $interval = $lastEnd->diff($shiftStart);
-                    $hours = ($interval->days * 24) + $interval->h;
-
-                    if ($shiftStart < $lastEnd || $hours < 11) {
-                        $canWork = false;
-                        break;
-                    }
-                }
+        foreach ($personnel->getPlannings() as $existing) {
+            // Chevauchement interdit
+            if ($start < $existing->getDateFin() && $end > $existing->getDateDebut()) {
+                return false;
             }
 
-            if ($canWork) {
-                return $personnel;
+            // Repos minimum de 11h
+            $interval = $existing->getDateFin()->diff($start);
+            $hours = ($interval->days * 24) + $interval->h;
+            if ($start < $existing->getDateFin() || $hours < 11) {
+                return false;
             }
         }
 
-        return null;
+        return true;
     }
 }

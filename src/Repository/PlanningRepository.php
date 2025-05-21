@@ -15,40 +15,19 @@ class PlanningRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Planning::class);
     }
-    public function findByGroupe($groupeId)
+
+    /**
+     * Retourne tous les plannings liés à un groupe donné
+     */
+    public function findByGroupe($groupeId): array
     {
         return $this->createQueryBuilder('p')
-            ->join('p.personnel', 'pers')
-            ->join('pers.groupe', 'g')
+            ->leftJoin('p.groupe', 'g')
+            ->addSelect('g')
             ->where('g.id = :groupeId')
             ->setParameter('groupeId', $groupeId)
+            ->orderBy('p.dateDebut', 'ASC')
             ->getQuery()
             ->getResult();
     }
-
-
-    //    /**
-    //     * @return Planning[] Returns an array of Planning objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Planning
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

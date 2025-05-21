@@ -23,11 +23,13 @@ class Groupe extends \App\Entity\Groupe implements \Doctrine\ORM\Proxy\InternalP
 
     private const LAZY_OBJECT_PROPERTY_SCOPES = [
         "\0".parent::class."\0".'besoins' => [parent::class, 'besoins', null, 16],
+        "\0".parent::class."\0".'groupe' => [parent::class, 'groupe', null, 16],
         "\0".parent::class."\0".'id' => [parent::class, 'id', null, 16],
         "\0".parent::class."\0".'nom' => [parent::class, 'nom', null, 16],
         "\0".parent::class."\0".'personnels' => [parent::class, 'personnels', null, 16],
         "\0".parent::class."\0".'structure' => [parent::class, 'structure', null, 16],
         'besoins' => [parent::class, 'besoins', null, 16],
+        'groupe' => [parent::class, 'groupe', null, 16],
         'id' => [parent::class, 'id', null, 16],
         'nom' => [parent::class, 'nom', null, 16],
         'personnels' => [parent::class, 'personnels', null, 16],

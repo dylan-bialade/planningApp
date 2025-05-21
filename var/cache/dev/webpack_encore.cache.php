@@ -4,8 +4,20 @@
 
 return [[
 
+'_default' => 0,
 
 ], [
 
+0 => [
+    'entrypoints' => [
+        'app' => [
+            'js' => [
+                '/build/runtime.js',
+                '/build/vendors-node_modules_core-js_modules_es_date_to-json_js-node_modules_core-js_modules_es_date_-99387e.js',
+                '/build/app.js',
+            ],
+        ],
+    ],
+],
 
 ]];

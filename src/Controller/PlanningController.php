@@ -25,6 +25,50 @@ class PlanningController extends AbstractController
     {
         $this->generator = $generator;
     }
+    #[Route('/update', name: 'planning_update', methods: ['POST'])]
+    public function update(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['id'], $data['start'], $data['end'])) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Champs manquants.']);
+        }
+
+        $planning = $em->getRepository(Planning::class)->find($data['id']);
+
+        if (!$planning) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Planning non trouvé.']);
+        }
+
+        $planning->setDateDebut(new \DateTime($data['start']));
+        $planning->setDateFin(new \DateTime($data['end']));
+        $planning->setDate((new \DateTime($data['start']))->setTime(0, 0)); // MAJ date principale
+        $em->flush();
+
+        return new JsonResponse(['status' => 'ok']);
+    }
+    #[Route('/delete', name: 'planning_delete', methods: ['POST'])]
+    public function delete(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['id'])) {
+            return new JsonResponse(['status' => 'error', 'message' => 'ID manquant.']);
+        }
+
+        $planning = $em->getRepository(Planning::class)->find($data['id']);
+
+        if (!$planning) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Planning non trouvé.']);
+        }
+
+        $em->remove($planning);
+        $em->flush();
+
+        return new JsonResponse(['status' => 'ok']);
+    }
+
+
 
     #[Route('/add-ajax', name: 'planning_add_ajax', methods: ['POST'])]
     public function addAjax(Request $request, EntityManagerInterface $em): JsonResponse
@@ -115,22 +159,25 @@ class PlanningController extends AbstractController
     public function events(Request $request, PlanningRepository $repo): JsonResponse
     {
         $groupeId = $request->query->get('groupe');
+
         if ($groupeId) {
             $plannings = $repo->findByGroupe($groupeId);
         } else {
             $plannings = $repo->findAll();
         }
+
         $data = [];
+
         foreach ($plannings as $p) {
             $title = $p->getLibelle();
             if (!$title && $p->getPersonnel()) {
                 $title = sprintf(
-                    '%s %s (Groupe %d)',
+                    '%s %s',
                     $p->getPersonnel()->getPrenom(),
-                    $p->getPersonnel()->getNom(),
-                    $p->getPersonnel()->getGroupe() ? $p->getPersonnel()->getGroupe()->getId() : 0
+                    $p->getPersonnel()->getNom()
                 );
             }
+
             $data[] = [
                 'id'    => $p->getId(),
                 'title' => $title ?? 'Non assigné',
@@ -138,8 +185,10 @@ class PlanningController extends AbstractController
                 'end'   => $p->getDateFin()->format(DATE_ATOM),
             ];
         }
+
         return new JsonResponse($data);
     }
+
 
     #[Route('/calendar', name: 'planning_calendar')]
     public function calendar(GroupeRepository $groupeRepo): Response

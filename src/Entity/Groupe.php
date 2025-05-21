@@ -32,6 +32,20 @@ class Groupe
      */
     #[ORM\OneToMany(targetEntity: Personnel::class, mappedBy: 'groupe')]
     private Collection $personnels;
+    #[ORM\ManyToOne(targetEntity: Groupe::class)]
+        private ?Groupe $groupe = null;
+
+        public function getGroupe(): ?Groupe
+        {
+            return $this->groupe;
+        }
+
+        public function setGroupe(?Groupe $groupe): self
+        {
+            $this->groupe = $groupe;
+            return $this;
+        }
+
 
     public function __construct()
     {

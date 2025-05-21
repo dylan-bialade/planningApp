@@ -1,17 +1,128 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Planning - Calendrier{% endblock %}
+{% block title %}Planning par groupe{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="/node_modules/@fullcalendar/core/main.global.min.css">
-    <link rel="stylesheet" href="/node_modules/@fullcalendar/daygrid/main.global.min.css">
-    <link rel="stylesheet" href="/node_modules/@fullcalendar/timegrid/main.global.min.css">
-    {{ encore_entry_link_tags('app') }}
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-    <div id="calendar"></div>
-    <button id="generate">Générer automatiquement</button>
-    {{ encore_entry_script_tags('app') }}
+  <h1>Planning par groupe</h1>
+
+  <div style="margin-bottom: 20px;">
+    <label for="groupe-select">Choisir un groupe :</label>
+    <select id="groupe-select">
+      {% for groupe in groupes %}
+        <option value="{{ groupe.id }}">{{ groupe.nom }}</option>
+      {% else %}
+        <option disabled>Aucun groupe trouvé</option>
+      {% endfor %}
+    </select>
+
+    <button id="generate-button" style="margin-left: 15px;">🔄 Générer planning auto</button>
+  </div>
+
+  <div id="calendar" style="margin-top: 30px;"></div>
+{% endblock %}
+
+{% block javascripts %}
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+      const selectGroupe = document.getElementById('groupe-select');
+      const generateButton = document.getElementById('generate-button');
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        editable: true,
+        nowIndicator: true,
+        locale: 'fr',
+        slotMinTime: '06:45:00',
+        slotMaxTime: '22:00:00',
+        slotLabelFormat: {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        },
+        eventTimeFormat: {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        },
+
+        events: function (info, successCallback, failureCallback) {
+          const groupeId = selectGroupe.value;
+          if (!groupeId) return;
+
+          fetch('/planning/events?groupe=' + groupeId)
+            .then(response => response.json())
+            .then(data => successCallback(data))
+            .catch(error => failureCallback(error));
+        },
+
+        eventClick: function (info) {
+          if (confirm("Supprimer ce créneau ?")) {
+            fetch('/planning/delete', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: info.event.id })
+            }).then(() => info.event.remove());
+          }
+        },
+
+        eventDrop: function (info) {
+          updateEvent(info.event);
+        },
+
+        eventResize: function (info) {
+          updateEvent(info.event);
+        }
+      });
+
+      calendar.render();
+
+      selectGroupe.addEventListener('change', function () {
+        calendar.refetchEvents();
+      });
+
+      generateButton.addEventListener('click', function () {
+        generateButton.disabled = true;
+        generateButton.innerText = "⏳ Génération...";
+
+        fetch('/planning/setup')
+          .then(res => res.text())
+          .then(() => {
+            generateButton.disabled = false;
+            generateButton.innerText = "✅ Planning généré";
+            calendar.refetchEvents();
+            setTimeout(() => {
+              generateButton.innerText = "🔄 Générer planning auto";
+            }, 2000);
+          })
+          .catch(() => {
+            alert("Erreur lors de la génération.");
+            generateButton.disabled = false;
+            generateButton.innerText = "🔄 Générer planning auto";
+          });
+      });
+
+      function updateEvent(event) {
+        fetch('/planning/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: event.id,
+            start: event.start.toISOString(),
+            end: event.end.toISOString()
+          })
+        }).then(res => res.json()).then(data => {
+          if (data.status !== 'ok') {
+            alert("Erreur lors de la mise à jour.");
+            calendar.refetchEvents();
+          }
+        });
+      }
+    });
+  </script>
 {% endblock %}

@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\PlanningRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Personnel;
+use App\Entity\Groupe;
 
 #[ORM\Entity(repositoryClass: PlanningRepository::class)]
 class Planning
@@ -31,9 +33,83 @@ class Planning
 
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $dateFin = null;
-    
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $libelle = null;
+
+    #[ORM\ManyToOne(targetEntity: Groupe::class)]
+    private ?Groupe $groupe = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getDate(): ?\DateTime
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTime $date): self
+    {
+        $this->date = $date;
+        return $this;
+    }
+
+    public function getPlage(): ?string
+    {
+        return $this->plage;
+    }
+
+    public function setPlage(string $plage): self
+    {
+        $this->plage = $plage;
+        return $this;
+    }
+
+    public function getPersonnel(): ?Personnel
+    {
+        return $this->personnel;
+    }
+
+    public function setPersonnel(?Personnel $personnel): self
+    {
+        $this->personnel = $personnel;
+        return $this;
+    }
+
+    public function getSource(): ?string
+    {
+        return $this->source;
+    }
+
+    public function setSource(string $source): self
+    {
+        $this->source = $source;
+        return $this;
+    }
+
+    public function getDateDebut(): ?\DateTimeInterface
+    {
+        return $this->dateDebut;
+    }
+
+    public function setDateDebut(\DateTimeInterface $dateDebut): self
+    {
+        $this->dateDebut = $dateDebut;
+        return $this;
+    }
+
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->dateFin;
+    }
+
+    public function setDateFin(\DateTimeInterface $dateFin): self
+    {
+        $this->dateFin = $dateFin;
+        return $this;
+    }
 
     public function getLibelle(): ?string
     {
@@ -46,110 +122,14 @@ class Planning
         return $this;
     }
 
-
-    public function getDuree(): int
+    public function getGroupe(): ?Groupe
     {
-        if ($this->dateDebut && $this->dateFin) {
-            return $this->dateDebut->diff($this->dateFin)->h;
-        }
-        return 0;
-    }
-    public function getNomAffichage(): string
-    {
-        if ($this->getPersonnel() === null) {
-            return '🚨 Besoin de personnel';
-        }
-
-        $prenom = $this->getPersonnel()->getPrenom();
-        $nom = $this->getPersonnel()->getNom();
-        $groupe = $this->getPersonnel()->getGroupe()?->getId();
-
-        return sprintf('%s %s (Groupe %d)', $prenom, $nom, $groupe);
+        return $this->groupe;
     }
 
-
-
-    public function getDateFin(): ?\DateTimeInterface
+    public function setGroupe(?Groupe $groupe): self
     {
-        return $this->dateFin;
-    }
-    
-    public function setDateFin(\DateTimeInterface $dateFin): static
-    {
-        $this->dateFin = $dateFin;
+        $this->groupe = $groupe;
         return $this;
     }
-    
-    public function getDateDebut(): ?\DateTimeInterface
-    {
-        return $this->dateDebut;
-    }
-
-    public function setDateDebut(\DateTimeInterface $dateDebut): static
-    {
-        $this->dateDebut = $dateDebut;
-        return $this;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getDate(): ?\DateTime
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTime $date): static
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getPlage(): ?string
-    {
-        return $this->plage;
-    }
-
-    public function setPlage(string $plage): static
-    {
-        $this->plage = $plage;
-
-        return $this;
-    }
-
-    public function getPersonnel(): ?Personnel
-    {
-        return $this->personnel;
-    }
-
-    public function setPersonnel(?Personnel $personnel): static
-    {
-        $this->personnel = $personnel;
-
-        return $this;
-    }
-
-    public function getSource(): ?string
-    {
-        return $this->source;
-    }
-
-    public function setSource(string $source): static
-    {
-        $this->source = $source;
-
-        return $this;
-    }
-    
-    public function peutAccepterPlanning(Planning $planning): bool
-    {
-        $duree = $planning->getDuree();
-        return $this->getTempsTravailRestant() >= $duree;
-
-    }
-
-
 }
