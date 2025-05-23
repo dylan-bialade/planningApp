@@ -6,6 +6,11 @@
 {% block body %}
 <div class="container mt-5">
     <h1>Bienvenue sur votre outil de gestion de plannings</h1>
+    <a href="{{ path('app_login') }}" class="btn btn-primary">
+            Se connecter
+        </a>
+        <a href="{{ path('app_register') }}">Inscription</a>
+
     <ul class="list-group mt-4">
         <li class="list-group-item">
             <a href="{{ path('planning_new') }}">Créer un planning manuellement</a>

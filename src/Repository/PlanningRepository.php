@@ -8,6 +8,11 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Planning>
+ *
+ * @method Planning|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Planning|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Planning[]    findAll()
+ * @method Planning[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PlanningRepository extends ServiceEntityRepository
 {
@@ -17,7 +22,7 @@ class PlanningRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne tous les plannings liés à un groupe donné
+     * Récupère les plannings d'un groupe donné
      */
     public function findByGroupe($groupeId): array
     {
@@ -26,7 +31,6 @@ class PlanningRepository extends ServiceEntityRepository
             ->addSelect('g')
             ->where('g.id = :groupeId')
             ->setParameter('groupeId', $groupeId)
-            ->orderBy('p.dateDebut', 'ASC')
             ->getQuery()
             ->getResult();
     }

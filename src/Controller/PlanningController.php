@@ -25,6 +25,49 @@ class PlanningController extends AbstractController
     {
         $this->generator = $generator;
     }
+
+    #[Route('/available', name: 'planning_available', methods: ['POST'])]
+    public function getAvailable(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $start = new \DateTime($data['start']);
+        $end = new \DateTime($data['end']);
+        $groupeId = $data['groupe'];
+
+        $employes = $em->getRepository(Personnel::class)->createQueryBuilder('p')
+            ->leftJoin('p.plannings', 'pl')
+            ->where('p.groupe = :groupeId')
+            ->setParameter('groupeId', $groupeId)
+            ->getQuery()
+            ->getResult();
+
+        $disponibles = [];
+
+        foreach ($employes as $e) {
+            $isFree = true;
+            foreach ($e->getPlannings() as $planning) {
+                if (
+                    $start < $planning->getDateFin() &&
+                    $end > $planning->getDateDebut()
+                ) {
+                    $isFree = false;
+                    break;
+                }
+            }
+
+            if ($isFree) {
+                $disponibles[] = [
+                    'id' => $e->getId(),
+                    'nom' => $e->getNom(),
+                    'prenom' => $e->getPrenom()
+                ];
+            }
+        }
+
+        return new JsonResponse($disponibles);
+    }
+
     #[Route('/update', name: 'planning_update', methods: ['POST'])]
     public function update(Request $request, EntityManagerInterface $em): JsonResponse
     {
@@ -42,11 +85,12 @@ class PlanningController extends AbstractController
 
         $planning->setDateDebut(new \DateTime($data['start']));
         $planning->setDateFin(new \DateTime($data['end']));
-        $planning->setDate((new \DateTime($data['start']))->setTime(0, 0)); // MAJ date principale
+        $planning->setDate((new \DateTime($data['start']))->setTime(0, 0));
         $em->flush();
 
         return new JsonResponse(['status' => 'ok']);
     }
+
     #[Route('/delete', name: 'planning_delete', methods: ['POST'])]
     public function delete(Request $request, EntityManagerInterface $em): JsonResponse
     {
@@ -68,84 +112,82 @@ class PlanningController extends AbstractController
         return new JsonResponse(['status' => 'ok']);
     }
 
-
-
     #[Route('/add-ajax', name: 'planning_add_ajax', methods: ['POST'])]
-    public function addAjax(Request $request, EntityManagerInterface $em): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
+public function addAjax(Request $request, EntityManagerInterface $em): JsonResponse
+{
+    $data = json_decode($request->getContent(), true);
 
-        if (empty($data['nom']) || empty($data['prenom']) || empty($data['start']) || empty($data['end']) || empty($data['date'])) {
-            return new JsonResponse(['status' => 'error', 'message' => 'Champs manquants.']);
-        }
+    $date     = $data['date'] ?? null;
+    $start    = $data['start'] ?? null;
+    $end      = $data['end'] ?? null;
+    $nom      = $data['nom'] ?? null;
+    $prenom   = $data['prenom'] ?? null;
+    $groupeId = $data['groupe_id'] ?? $data['groupe'] ?? null;
 
-        // Gestion du groupe
-        $groupe = null;
-        if (!empty($data['groupe'])) {
-            $groupe = $em->getRepository(Groupe::class)->find($data['groupe']);
-        }
-
-        // Cherche ou crée le personnel
-        $repo = $em->getRepository(Personnel::class);
-        $personnel = $repo->findOneBy([
-            'nom' => $data['nom'],
-            'prenom' => $data['prenom'],
-        ]);
-        if (!$personnel) {
-            $personnel = new Personnel();
-            $personnel->setNom($data['nom']);
-            $personnel->setPrenom($data['prenom']);
-            if ($groupe) $personnel->setGroupe($groupe);
-            $em->persist($personnel);
-        } elseif ($groupe && $personnel->getGroupe() !== $groupe) {
-            $personnel->setGroupe($groupe);
-        }
-
-        $start = new \DateTime($data['date'] . ' ' . $data['start']);
-        $end = new \DateTime($data['date'] . ' ' . $data['end']);
-
-        // Vérification conflit
-        $conflicts = $em->getRepository(Planning::class)->createQueryBuilder('p')
-            ->where('p.personnel = :personnel')
-            ->andWhere('(:start < p.dateFin AND :end > p.dateDebut)')
-            ->setParameter('personnel', $personnel)
-            ->setParameter('start', $start)
-            ->setParameter('end', $end)
-            ->getQuery()->getResult();
-
-        if (count($conflicts) > 0) {
-            return new JsonResponse([
-                'status' => 'error',
-                'message' => 'Cet employé a déjà un planning à ce créneau !'
-            ]);
-        }
-
-        $planning = new Planning();
-        $planning->setDate(new \DateTime($data['date']));
-        $planning->setDateDebut($start);
-        $planning->setDateFin($end);
-        $planning->setPersonnel($personnel);
-        $planning->setSource('manuel');
-        // Libellé adapté
-        $libelle = method_exists($personnel, 'getNomAffichage') ? $personnel->getNomAffichage() : ($personnel->getPrenom() . ' ' . $personnel->getNom());
-        $planning->setLibelle($libelle . ($groupe ? ' (Groupe ' . $groupe->getNom() . ')' : ''));
-
-        $em->persist($planning);
-        $em->flush();
-
-        return new JsonResponse(['status' => 'ok']);
+    if (!$date || !$start || !$end || !$nom || !$prenom || !$groupeId) {
+        return new JsonResponse(['success' => false, 'message' => 'Paramètres manquants.'], 400);
     }
 
+    try {
+        $dateDebut = new \DateTime("$date $start");
+        $dateFin   = new \DateTime("$date $end");
+    } catch (\Exception $e) {
+        return new JsonResponse(['success' => false, 'message' => 'Format de date invalide.'], 400);
+    }
+
+    $groupe = $em->getRepository(Groupe::class)->find($groupeId);
+    if (!$groupe) {
+        return new JsonResponse(['success' => false, 'message' => 'Groupe non trouvé.'], 404);
+    }
+
+    $personnel = $em->getRepository(Personnel::class)->findOneBy([
+        'nom' => $nom,
+        'prenom' => $prenom
+    ]);
+    if (!$personnel) {
+        return new JsonResponse(['success' => false, 'message' => 'Personnel non trouvé.'], 404);
+    }
+
+    $conflits = $em->getRepository(Planning::class)->createQueryBuilder('p')
+        ->where('p.personnel = :personnel')
+        ->andWhere('(:start < p.dateFin AND :end > p.dateDebut)')
+        ->setParameter('personnel', $personnel)
+        ->setParameter('start', $dateDebut)
+        ->setParameter('end', $dateFin)
+        ->getQuery()
+        ->getResult();
+
+    if (count($conflits) > 0) {
+        return new JsonResponse(['success' => false, 'message' => 'Conflit détecté dans le planning.'], 409);
+    }
+
+    $planning = new Planning();
+    $planning->setDate(new \DateTime($date));
+    $planning->setPlage("$start - $end");
+    $planning->setDateDebut($dateDebut);
+    $planning->setDateFin($dateFin);
+    $planning->setSource('manuel');
+    $planning->setLibelle("$prenom $nom (Groupe {$groupe->getNom()})");
+    $planning->setPersonnel($personnel);
+    $planning->setGroupe($groupe);
+
+    $em->persist($planning);
+    $em->flush();
+
+    return new JsonResponse(['success' => true, 'message' => 'Créneau ajouté avec succès.']);
+}
+
+
+
+
     #[Route('/generate-ajax', name: 'planning_generate_ajax', methods: ['POST'])]
-    public function generateAjax(
-        Request $request,
-        PlanningGenerator $generator
-    ): JsonResponse {
+    public function generateAjax(Request $request, PlanningGenerator $generator): JsonResponse
+    {
         $params = json_decode($request->getContent(), true);
-        $year  = (int)($params['year'] ?? date('Y'));
-        $week  = (int)($params['week'] ?? date('W'));
-        $mor  = (int)($params['morningCount'] ?? 2);
-        $aft  = (int)($params['afternoonCount'] ?? 2);
+        $year = (int)($params['year'] ?? date('Y'));
+        $week = (int)($params['week'] ?? date('W'));
+        $mor = (int)($params['morningCount'] ?? 2);
+        $aft = (int)($params['afternoonCount'] ?? 2);
 
         $date = new \DateTime();
         $date->setISODate($year, $week);
@@ -160,22 +202,16 @@ class PlanningController extends AbstractController
     {
         $groupeId = $request->query->get('groupe');
 
-        if ($groupeId) {
-            $plannings = $repo->findByGroupe($groupeId);
-        } else {
-            $plannings = $repo->findAll();
-        }
+        $plannings = $groupeId
+            ? $repo->findByGroupe($groupeId)
+            : $repo->findAll();
 
         $data = [];
 
         foreach ($plannings as $p) {
             $title = $p->getLibelle();
             if (!$title && $p->getPersonnel()) {
-                $title = sprintf(
-                    '%s %s',
-                    $p->getPersonnel()->getPrenom(),
-                    $p->getPersonnel()->getNom()
-                );
+                $title = sprintf('%s %s', $p->getPersonnel()->getPrenom(), $p->getPersonnel()->getNom());
             }
 
             $data[] = [
@@ -189,13 +225,11 @@ class PlanningController extends AbstractController
         return new JsonResponse($data);
     }
 
-
     #[Route('/calendar', name: 'planning_calendar')]
     public function calendar(GroupeRepository $groupeRepo): Response
     {
-        $groupes = $groupeRepo->findAll();
         return $this->render('planning/calendar.html.twig', [
-            'groupes' => $groupes,
+            'groupes' => $groupeRepo->findAll(),
         ]);
     }
 
@@ -229,9 +263,7 @@ class PlanningController extends AbstractController
                 return $this->redirectToRoute('planning_new');
             }
 
-            if (method_exists($planning, 'estCompatibleAvecDisponibilites')
-                && !$planning->estCompatibleAvecDisponibilites()
-            ) {
+            if (method_exists($planning, 'estCompatibleAvecDisponibilites') && !$planning->estCompatibleAvecDisponibilites()) {
                 $this->addFlash('error', 'Ce personnel n’est pas disponible à ce créneau.');
                 return $this->redirectToRoute('planning_new');
             }
@@ -249,11 +281,8 @@ class PlanningController extends AbstractController
     }
 
     #[Route('/generate/{year}/{week}', name: 'planning_generate')]
-    public function generate(
-        int $year,
-        int $week,
-        PlanningGenerator $generator
-    ): Response {
+    public function generate(int $year, int $week, PlanningGenerator $generator): Response
+    {
         $date = new \DateTime();
         $date->setISODate($year, $week);
 

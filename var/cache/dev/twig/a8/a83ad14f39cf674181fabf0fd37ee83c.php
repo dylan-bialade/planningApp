@@ -99,16 +99,27 @@ class __TwigTemplate_5fd19ecdf79c0cf7d7a5fb97464891a5 extends Template
         // line 7
         yield "<div class=\"container mt-5\">
     <h1>Bienvenue sur votre outil de gestion de plannings</h1>
+    <a href=\"";
+        // line 9
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_login");
+        yield "\" class=\"btn btn-primary\">
+            Se connecter
+        </a>
+        <a href=\"";
+        // line 12
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_register");
+        yield "\">Inscription</a>
+
     <ul class=\"list-group mt-4\">
         <li class=\"list-group-item\">
             <a href=\"";
-        // line 11
+        // line 16
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_new");
         yield "\">Créer un planning manuellement</a>
         </li>
         <li class=\"list-group-item\">
             <a href=\"";
-        // line 14
+        // line 19
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_generate", ["year" => $this->extensions['Twig\Extension\CoreExtension']->formatDate("now", "Y"), "week" => $this->extensions['Twig\Extension\CoreExtension']->formatDate("now", "W")]), "html", null, true);
         yield "\">
                 Générer automatiquement le planning de la semaine en cours
@@ -116,24 +127,24 @@ class __TwigTemplate_5fd19ecdf79c0cf7d7a5fb97464891a5 extends Template
         </li>
         <li class=\"list-group-item\">
             <a href=\"";
-        // line 19
+        // line 24
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("personnel_new");
         yield "\">Ajouter un nouveau personnel</a>
         </li>
         <li class=\"list-group-item\">
             <a href=\"";
-        // line 22
+        // line 27
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("personnel_indisponibilite");
         yield "\">Déclarer une indisponibilité</a>
         </li>
         <li class=\"list-group-item\">
             <a href=\"";
-        // line 25
+        // line 30
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_list");
         yield "\">Voir tous les plannings</a>
         <li class=\"list-group-item\">
         <a href=\"";
-        // line 27
+        // line 32
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_calendar");
         yield "\">Calendrier interactif</a>
         </li>
@@ -171,7 +182,7 @@ class __TwigTemplate_5fd19ecdf79c0cf7d7a5fb97464891a5 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  137 => 27,  132 => 25,  126 => 22,  120 => 19,  112 => 14,  106 => 11,  100 => 7,  87 => 6,  64 => 4,  41 => 2,);
+        return array (  148 => 32,  143 => 30,  137 => 27,  131 => 24,  123 => 19,  117 => 16,  110 => 12,  104 => 9,  100 => 7,  87 => 6,  64 => 4,  41 => 2,);
     }
 
     public function getSourceContext(): Source
@@ -184,6 +195,11 @@ class __TwigTemplate_5fd19ecdf79c0cf7d7a5fb97464891a5 extends Template
 {% block body %}
 <div class=\"container mt-5\">
     <h1>Bienvenue sur votre outil de gestion de plannings</h1>
+    <a href=\"{{ path('app_login') }}\" class=\"btn btn-primary\">
+            Se connecter
+        </a>
+        <a href=\"{{ path('app_register') }}\">Inscription</a>
+
     <ul class=\"list-group mt-4\">
         <li class=\"list-group-item\">
             <a href=\"{{ path('planning_new') }}\">Créer un planning manuellement</a>

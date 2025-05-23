@@ -19,6 +19,7 @@ return [
         '/personnel/list' => [[['_route' => 'personnel_list', '_controller' => 'App\\Controller\\PersonnelController::list'], null, null, null, false, false, null]],
         '/personnel/new' => [[['_route' => 'personnel_new', '_controller' => 'App\\Controller\\PersonnelController::new'], null, null, null, false, false, null]],
         '/personnel/personnel/indisponibilite' => [[['_route' => 'personnel_indisponibilite', '_controller' => 'App\\Controller\\PersonnelController::nouvelleIndisponibilite'], null, null, null, false, false, null]],
+        '/planning/available' => [[['_route' => 'planning_available', '_controller' => 'App\\Controller\\PlanningController::getAvailable'], null, ['POST' => 0], null, false, false, null]],
         '/planning/update' => [[['_route' => 'planning_update', '_controller' => 'App\\Controller\\PlanningController::update'], null, ['POST' => 0], null, false, false, null]],
         '/planning/delete' => [[['_route' => 'planning_delete', '_controller' => 'App\\Controller\\PlanningController::delete'], null, ['POST' => 0], null, false, false, null]],
         '/planning/add-ajax' => [[['_route' => 'planning_add_ajax', '_controller' => 'App\\Controller\\PlanningController::addAjax'], null, ['POST' => 0], null, false, false, null]],
@@ -28,6 +29,9 @@ return [
         '/planning/list' => [[['_route' => 'planning_list', '_controller' => 'App\\Controller\\PlanningController::list'], null, null, null, false, false, null]],
         '/planning/new' => [[['_route' => 'planning_new', '_controller' => 'App\\Controller\\PlanningController::new'], null, null, null, false, false, null]],
         '/planning/setup' => [[['_route' => 'planning_setup', '_controller' => 'App\\Controller\\PlanningSetupController::setup'], null, null, null, false, false, null]],
+        '/register' => [[['_route' => 'app_register', '_controller' => 'App\\Controller\\RegistrationController::register'], null, null, null, false, false, null]],
+        '/login' => [[['_route' => 'app_login', '_controller' => 'App\\Controller\\SecurityController::login'], null, null, null, false, false, null]],
+        '/logout' => [[['_route' => 'app_logout', '_controller' => 'App\\Controller\\SecurityController::logout'], null, null, null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'
