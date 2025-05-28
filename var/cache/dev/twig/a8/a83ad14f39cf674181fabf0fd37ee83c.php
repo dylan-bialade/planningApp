@@ -134,17 +134,24 @@ class __TwigTemplate_5fd19ecdf79c0cf7d7a5fb97464891a5 extends Template
         <li class=\"list-group-item\">
             <a href=\"";
         // line 27
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("list_groupes");
+        yield "\">list group</a>
+        </li>
+        
+        <li class=\"list-group-item\">
+            <a href=\"";
+        // line 31
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("personnel_indisponibilite");
         yield "\">Déclarer une indisponibilité</a>
         </li>
         <li class=\"list-group-item\">
             <a href=\"";
-        // line 30
+        // line 34
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_list");
         yield "\">Voir tous les plannings</a>
         <li class=\"list-group-item\">
         <a href=\"";
-        // line 32
+        // line 36
         yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("planning_calendar");
         yield "\">Calendrier interactif</a>
         </li>
@@ -182,7 +189,7 @@ class __TwigTemplate_5fd19ecdf79c0cf7d7a5fb97464891a5 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  148 => 32,  143 => 30,  137 => 27,  131 => 24,  123 => 19,  117 => 16,  110 => 12,  104 => 9,  100 => 7,  87 => 6,  64 => 4,  41 => 2,);
+        return array (  155 => 36,  150 => 34,  144 => 31,  137 => 27,  131 => 24,  123 => 19,  117 => 16,  110 => 12,  104 => 9,  100 => 7,  87 => 6,  64 => 4,  41 => 2,);
     }
 
     public function getSourceContext(): Source
@@ -213,6 +220,10 @@ class __TwigTemplate_5fd19ecdf79c0cf7d7a5fb97464891a5 extends Template
             <a href=\"{{ path('personnel_new') }}\">Ajouter un nouveau personnel</a>
         </li>
         <li class=\"list-group-item\">
+            <a href=\"{{ path('list_groupes') }}\">list group</a>
+        </li>
+        
+        <li class=\"list-group-item\">
             <a href=\"{{ path('personnel_indisponibilite') }}\">Déclarer une indisponibilité</a>
         </li>
         <li class=\"list-group-item\">
@@ -224,6 +235,6 @@ class __TwigTemplate_5fd19ecdf79c0cf7d7a5fb97464891a5 extends Template
     </ul>
 </div>
 {% endblock %}
-", "home/index.html.twig", "C:\\wamp64\\www\\planningApp\\templates\\home\\index.html.twig");
+", "home/index.html.twig", "C:\\Users\\dbialade\\planningApp\\templates\\home\\index.html.twig");
     }
 }

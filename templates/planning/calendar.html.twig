@@ -18,6 +18,7 @@
     </select>
 
     <button id="generate-button" style="margin-left: 15px;">🔄 Générer planning auto</button>
+    <button id="btn-valider-planning" style="margin-left: 15px;">✅ Valider le planning</button>
   </div>
 
   <div id="calendar" style="margin-top: 30px;"></div>
@@ -48,6 +49,7 @@
       const inputFin = document.getElementById('input-fin');
       const btnAjouter = document.getElementById('btn-ajouter-employe');
       const ajoutContainer = document.getElementById('ajout-container');
+      const btnValiderPlanning = document.getElementById('btn-valider-planning');
 
       let currentDate = null;
       let currentEmployes = [];
@@ -178,6 +180,29 @@
             alert(data.message || "Erreur lors de l’ajout.");
           }
         });
+      });
+
+      btnValiderPlanning.addEventListener('click', function () {
+        const groupeId = selectGroupe.value;
+        if (!groupeId) {
+          alert("Veuillez sélectionner un groupe.");
+          return;
+        }
+
+        if (!confirm("Voulez-vous valider le planning pour ce groupe ?")) {
+          return;
+        }
+
+        fetch('/planning/' + groupeId + '/valider-groupe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        })
+        .then(res => res.json())
+        .then(data => {
+          alert(data.message);
+          calendar.refetchEvents();
+        })
+        .catch(() => alert("Erreur lors de la validation."));
       });
 
       function updateEvent(event) {

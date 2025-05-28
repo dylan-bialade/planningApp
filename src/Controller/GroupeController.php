@@ -31,4 +31,14 @@ class GroupeController extends AbstractController
 
         return new Response('✅ Groupes 1 à 10 créés avec succès.');
     }
+    #[Route('/groupes/list', name: 'list_groupes')]
+    public function listGroupes(EntityManagerInterface $em)
+    {
+        $repo = $em->getRepository(Groupe::class);
+    {
+        return $this->render('groupe/list.html.twig', [
+            'nb' =>18,
+        ]);
+    }
+}
 }

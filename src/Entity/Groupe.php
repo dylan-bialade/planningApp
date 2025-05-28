@@ -14,6 +14,11 @@ class Groupe
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+    #[ORM\OneToOne(targetEntity: Personnel::class)]
+    private ?Personnel $responsable = null;
+
+    public function getResponsable(): ?Personnel { return $this->responsable; }
+    public function setResponsable(?Personnel $responsable): self { $this->responsable = $responsable; return $this; }
 
     #[ORM\Column(length: 255)]
     private ?string $nom = null;

@@ -10,29 +10,30 @@
 {% block body %}
     <h1>Liste des plannings</h1>
     <table>
-        <tr>
-            <th>Date</th>
-            <th>Plage</th>
-            <th>Personnel</th>
-            <th>Groupe</th>
-            <th>Libellé</th>
-        </tr>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Employé</th>
+                <th>Début</th>
+                <th>Fin</th>
+                <th>État</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for planning in plannings %}
             <tr>
-                <td>{{ planning.date ? planning.date|date('d/m/Y') : '-' }}</td>
-                <td>{{ planning.plage }}</td>
+                <td>{{ planning.id }}</td>
+                <td>{{ planning.personnel.nom ~ ' ' ~ planning.personnel.prenom }}</td>
+                <td>{{ planning.dateDebut|date('d/m/Y H:i') }}</td>
+                <td>{{ planning.dateFin|date('d/m/Y H:i') }}</td>
                 <td>
-                    {% if planning.personnel %}
-                        {{ planning.personnel.prenom }} {{ planning.personnel.nom }}
-                    {% else %}
-                        Besoin de personnel
-                    {% endif %}
+                    {{ planning.suiviPlannings|last ? planning.suiviPlannings|last.etat.libelle : 'N/A' }}
                 </td>
-                <td>{{ planning.personnel and planning.personnel.groupe ? planning.personnel.groupe.id : '-' }}</td>
-                <td>{{ planning.libelle }}</td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
+
     <a href="{{ path('planning_calendar') }}">Retour au calendrier</a>
     {{ encore_entry_script_tags('app') }}
 {% endblock %}

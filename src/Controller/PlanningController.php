@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Personnel;
 use App\Entity\Planning;
 use App\Entity\Groupe;
+use App\Entity\Etat;
+use App\Entity\SuiviPlanning;
 use App\Form\PlanningType;
 use App\Repository\PlanningRepository;
 use App\Repository\GroupeRepository;
@@ -25,6 +27,54 @@ class PlanningController extends AbstractController
     {
         $this->generator = $generator;
     }
+
+    #[Route('/{groupeId}/valider-groupe', name: 'planning_valider_groupe', methods: ['POST'])]
+    public function validerGroupe(int $groupeId, EntityManagerInterface $em): JsonResponse
+    {
+        $groupe = $em->getRepository(Groupe::class)->find($groupeId);
+        if (!$groupe) {
+            return new JsonResponse(['success' => false, 'message' => 'Groupe non trouvé.'], 404);
+        }
+
+        $plannings = $em->getRepository(Planning::class)->findBy(['groupe' => $groupe]);
+        $personnels = $em->getRepository(Personnel::class)->findBy(['groupe' => $groupe]);
+
+        $personnelsCouvert = [];
+        foreach ($plannings as $pl) {
+            if ($pl->getPersonnel()) {
+                $personnelsCouvert[$pl->getPersonnel()->getId()] = true;
+            }
+        }
+
+        $nombrePersonnelTotal = count($personnels);
+        $nombreCouverts = count($personnelsCouvert);
+
+        if ($nombreCouverts >= $nombrePersonnelTotal) {
+            $nouvelEtat = $em->getRepository(Etat::class)->findOneBy(['libelle' => 'finalisé']);
+            $message = "Planning validé : tous les employés sont couverts.";
+        } else {
+            $nouvelEtat = $em->getRepository(Etat::class)->findOneBy(['libelle' => 'en_cour']);
+            $message = "Planning partiellement validé : il manque des employés.";
+        }
+        
+        if (!$nouvelEtat) {
+            return new JsonResponse(['success' => false, 'message' => 'État introuvable en base.'], 500);
+        }
+        
+
+        foreach ($plannings as $planning) {
+            $suivi = new SuiviPlanning();
+            $suivi->setEtat($nouvelEtat);
+            $suivi->setPlanning($planning);
+            $suivi->setDate(new \DateTime());
+            $em->persist($suivi);
+        }
+
+        $em->flush();
+
+        return new JsonResponse(['success' => true, 'message' => $message]);
+    }
+    
 
     #[Route('/available', name: 'planning_available', methods: ['POST'])]
     public function getAvailable(Request $request, EntityManagerInterface $em): JsonResponse
@@ -201,29 +251,33 @@ public function addAjax(Request $request, EntityManagerInterface $em): JsonRespo
     public function events(Request $request, PlanningRepository $repo): JsonResponse
     {
         $groupeId = $request->query->get('groupe');
+        if ($groupeId) {
+            $plannings = $repo->findBy(['groupe' => $groupeId]);
+        } else {
+            $plannings = $repo->findAll();
+        }
 
-        $plannings = $groupeId
-            ? $repo->findByGroupe($groupeId)
-            : $repo->findAll();
+        $user = $this->getUser();
+        $isAdmin = $user && (in_array('ROLE_ADMIN', $user->getRoles()) || in_array('ROLE_RESPONSABLE', $user->getRoles()));
 
         $data = [];
-
         foreach ($plannings as $p) {
-            $title = $p->getLibelle();
-            if (!$title && $p->getPersonnel()) {
-                $title = sprintf('%s %s', $p->getPersonnel()->getPrenom(), $p->getPersonnel()->getNom());
+            $etat = $p->getSuiviPlannings()->last();
+            if (!$isAdmin && (!$etat || $etat->getEtat()->getLibelle() !== 'Validé')) {
+                continue;
             }
-
             $data[] = [
-                'id'    => $p->getId(),
-                'title' => $title ?? 'Non assigné',
+                'id' => $p->getId(),
+                'title' => $p->getLibelle() ?: ($p->getPersonnel() ? $p->getPersonnel()->getPrenom() . ' ' . $p->getPersonnel()->getNom() : 'Non assigné'),
                 'start' => $p->getDateDebut()->format(DATE_ATOM),
-                'end'   => $p->getDateFin()->format(DATE_ATOM),
+                'end' => $p->getDateFin()->format(DATE_ATOM),
+                'backgroundColor' => $etat && $etat->getEtat()->getLibelle() === 'Finalisé' ? '#5cb85c' : '#f0ad4e'
             ];
         }
 
         return new JsonResponse($data);
     }
+
 
     #[Route('/calendar', name: 'planning_calendar')]
     public function calendar(GroupeRepository $groupeRepo): Response

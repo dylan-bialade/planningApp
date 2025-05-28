@@ -149,6 +149,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
         yield "    </select>
 
     <button id=\"generate-button\" style=\"margin-left: 15px;\">🔄 Générer planning auto</button>
+    <button id=\"btn-valider-planning\" style=\"margin-left: 15px;\">✅ Valider le planning</button>
   </div>
 
   <div id=\"calendar\" style=\"margin-top: 30px;\"></div>
@@ -175,7 +176,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
         yield from [];
     }
 
-    // line 39
+    // line 40
     /**
      * @return iterable<null|scalar|\Stringable>
      */
@@ -188,7 +189,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
 
-        // line 40
+        // line 41
         yield "  <script src=\"https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js\"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -200,6 +201,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
       const inputFin = document.getElementById('input-fin');
       const btnAjouter = document.getElementById('btn-ajouter-employe');
       const ajoutContainer = document.getElementById('ajout-container');
+      const btnValiderPlanning = document.getElementById('btn-valider-planning');
 
       let currentDate = null;
       let currentEmployes = [];
@@ -330,6 +332,29 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
             alert(data.message || \"Erreur lors de l’ajout.\");
           }
         });
+      });
+
+      btnValiderPlanning.addEventListener('click', function () {
+        const groupeId = selectGroupe.value;
+        if (!groupeId) {
+          alert(\"Veuillez sélectionner un groupe.\");
+          return;
+        }
+
+        if (!confirm(\"Voulez-vous valider le planning pour ce groupe ?\")) {
+          return;
+        }
+
+        fetch('/planning/' + groupeId + '/valider-groupe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        })
+        .then(res => res.json())
+        .then(data => {
+          alert(data.message);
+          calendar.refetchEvents();
+        })
+        .catch(() => alert(\"Erreur lors de la validation.\"));
       });
 
       function updateEvent(event) {
@@ -383,7 +408,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  192 => 40,  179 => 39,  149 => 18,  138 => 16,  134 => 15,  127 => 10,  114 => 9,  102 => 6,  89 => 5,  66 => 3,  43 => 1,);
+        return array (  193 => 41,  180 => 40,  149 => 18,  138 => 16,  134 => 15,  127 => 10,  114 => 9,  102 => 6,  89 => 5,  66 => 3,  43 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -408,6 +433,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
     </select>
 
     <button id=\"generate-button\" style=\"margin-left: 15px;\">🔄 Générer planning auto</button>
+    <button id=\"btn-valider-planning\" style=\"margin-left: 15px;\">✅ Valider le planning</button>
   </div>
 
   <div id=\"calendar\" style=\"margin-top: 30px;\"></div>
@@ -438,6 +464,7 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
       const inputFin = document.getElementById('input-fin');
       const btnAjouter = document.getElementById('btn-ajouter-employe');
       const ajoutContainer = document.getElementById('ajout-container');
+      const btnValiderPlanning = document.getElementById('btn-valider-planning');
 
       let currentDate = null;
       let currentEmployes = [];
@@ -570,6 +597,29 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
         });
       });
 
+      btnValiderPlanning.addEventListener('click', function () {
+        const groupeId = selectGroupe.value;
+        if (!groupeId) {
+          alert(\"Veuillez sélectionner un groupe.\");
+          return;
+        }
+
+        if (!confirm(\"Voulez-vous valider le planning pour ce groupe ?\")) {
+          return;
+        }
+
+        fetch('/planning/' + groupeId + '/valider-groupe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        })
+        .then(res => res.json())
+        .then(data => {
+          alert(data.message);
+          calendar.refetchEvents();
+        })
+        .catch(() => alert(\"Erreur lors de la validation.\"));
+      });
+
       function updateEvent(event) {
         fetch('/planning/update', {
           method: 'POST',
@@ -591,6 +641,6 @@ class __TwigTemplate_89e924dfdbeac3f471ae4f0205b8676f extends Template
     });
   </script>
 {% endblock %}
-", "planning/calendar.html.twig", "C:\\wamp64\\www\\planningApp\\templates\\planning\\calendar.html.twig");
+", "planning/calendar.html.twig", "C:\\Users\\dbialade\\planningApp\\templates\\planning\\calendar.html.twig");
     }
 }

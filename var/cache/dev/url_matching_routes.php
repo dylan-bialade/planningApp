@@ -15,6 +15,7 @@ return [
         '/_profiler/xdebug' => [[['_route' => '_profiler_xdebug', '_controller' => 'web_profiler.controller.profiler::xdebugAction'], null, null, null, false, false, null]],
         '/_profiler/open' => [[['_route' => '_profiler_open_file', '_controller' => 'web_profiler.controller.profiler::openAction'], null, null, null, false, false, null]],
         '/generate-groupes' => [[['_route' => 'generate_groupes', '_controller' => 'App\\Controller\\GroupeController::generateGroupes'], null, null, null, false, false, null]],
+        '/groupes/list' => [[['_route' => 'list_groupes', '_controller' => 'App\\Controller\\GroupeController::listGroupes'], null, null, null, false, false, null]],
         '/' => [[['_route' => 'app_home', '_controller' => 'App\\Controller\\HomeController::index'], null, null, null, false, false, null]],
         '/personnel/list' => [[['_route' => 'personnel_list', '_controller' => 'App\\Controller\\PersonnelController::list'], null, null, null, false, false, null]],
         '/personnel/new' => [[['_route' => 'personnel_new', '_controller' => 'App\\Controller\\PersonnelController::new'], null, null, null, false, false, null]],
@@ -56,8 +57,9 @@ return [
                 .'|/p(?'
                     .'|ersonnel/([^/]++)/dispo(*:230)'
                     .'|lanning/(?'
-                        .'|personnel/([^/]++)/temps\\-travail(*:282)'
-                        .'|generate/([^/]++)/([^/]++)(*:316)'
+                        .'|([^/]++)/valider\\-groupe(*:273)'
+                        .'|personnel/([^/]++)/temps\\-travail(*:314)'
+                        .'|generate/([^/]++)/([^/]++)(*:348)'
                     .')'
                 .')'
             .')/?$}sDu',
@@ -72,8 +74,9 @@ return [
         181 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception_panel::stylesheet'], ['token'], null, null, false, false, null]],
         191 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
         230 => [[['_route' => 'personnel_dispo', '_controller' => 'App\\Controller\\PersonnelController::dispo'], ['id'], null, null, false, false, null]],
-        282 => [[['_route' => 'planning_temps_travail', '_controller' => 'App\\Controller\\PlanningController::voirTempsTravail'], ['id'], null, null, false, false, null]],
-        316 => [
+        273 => [[['_route' => 'planning_valider_groupe', '_controller' => 'App\\Controller\\PlanningController::validerGroupe'], ['groupeId'], ['POST' => 0], null, false, false, null]],
+        314 => [[['_route' => 'planning_temps_travail', '_controller' => 'App\\Controller\\PlanningController::voirTempsTravail'], ['id'], null, null, false, false, null]],
+        348 => [
             [['_route' => 'planning_generate', '_controller' => 'App\\Controller\\PlanningController::generate'], ['year', 'week'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],

@@ -228,4 +228,58 @@ class Personnel implements UserInterface, PasswordAuthenticatedUserInterface
 
         return count($countDays) < 5;
     }
+    
+    public function peutAccepterPlanning(Planning $planning): bool
+    {
+        // Vérifier si le personnel a suffisamment d'heures disponibles
+        $dateDebut = $planning->getDateDebut();
+        $dateFin = $planning->getDateFin();
+        
+        if (!$dateDebut || !$dateFin) {
+            return false;
+        }
+        
+        // Calculer la durée du planning en heures
+        $duree = ($dateFin->getTimestamp() - $dateDebut->getTimestamp()) / 3600;
+        
+        // Vérifier si le personnel a suffisamment d'heures restantes
+        if ($duree > $this->getTempsTravailRestant()) {
+            return false;
+        }
+        
+        // Vérifier si le personnel est disponible à ce créneau
+        $date = $planning->getDate();
+        $plage = $planning->getPlage();
+        
+        if (!$date || !$plage) {
+            return false;
+        }
+        
+        if (!$this->isDisponible($date, $plage)) {
+            return false;
+        }
+        
+        // Vérifier si le personnel peut accepter plus d'heures ce jour-là
+        if (!$this->peutAccepterHeures($date, $plage)) {
+            return false;
+        }
+        
+        // Vérifier s'il y a des conflits avec d'autres plannings
+        foreach ($this->plannings as $existingPlanning) {
+            // Ignorer le planning actuel s'il est déjà dans la collection
+            if ($existingPlanning->getId() === $planning->getId()) {
+                continue;
+            }
+            
+            $existingDebut = $existingPlanning->getDateDebut();
+            $existingFin = $existingPlanning->getDateFin();
+            
+            // Vérifier s'il y a chevauchement
+            if ($dateDebut < $existingFin && $dateFin > $existingDebut) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 }
